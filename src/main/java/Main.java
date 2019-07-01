@@ -8,6 +8,8 @@ public class Main {
 
     public static Connection db = null; //behaves like a global variable
     //This is the method that opens the database
+
+
     private static void openDatabase(String dbFile) {
         try  {
             Class.forName("org.sqlite.JDBC");
