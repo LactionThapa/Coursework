@@ -1,7 +1,11 @@
+package Controller;
+
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class WishListsController {
+public class WishLists {
     //This method inserts data in the database
     public static void InsertWishList(int userID, String listname, Boolean status){
         try{

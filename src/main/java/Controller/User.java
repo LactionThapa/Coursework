@@ -1,10 +1,11 @@
-import org.sqlite.SQLiteConfig;
+package Controller;
 
-import java.sql.DriverManager;
+import Server.Main;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UserController {
+public class User {
     //This method selects a row of data
     public static void SelectUser() {
         try
