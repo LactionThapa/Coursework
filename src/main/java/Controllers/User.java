@@ -1,4 +1,4 @@
-package Controller;
+package Controllers;
 
 import Server.Main;
 
@@ -7,10 +7,10 @@ import java.sql.ResultSet;
 
 public class User {
     //This method selects a row of data
-    public static void SelectUser() {
+    public static void ListUsers() {
         try
         {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID, Username, Password, EmailAddress FROM Users");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
@@ -28,7 +28,7 @@ public class User {
     }
 
     //This method a pre-existing data in the database
-    public static void UpdateUser(int userID, String username, String password, String emailAddress){
+    public static void Update(int userID, String username, String password, String emailAddress){
         try{
             PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET Username = ?, Password = ?, EmailAddress = ? WHERE UserID = ?");
             ps.setInt(1, userID);
@@ -42,7 +42,7 @@ public class User {
     }
 
     //This method inserts data in the database
-    public static void InsertUser(String username, String password, String emailAddress){
+    public static void Add(String username, String password, String emailAddress){
         try{
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (Username, Password, EmailAddress) Values(?,?,?)");
             ps.setString(1,username);
@@ -57,10 +57,10 @@ public class User {
     }
 
     //This method deletes a record in the table
-    public static void DeleteUser(int userID){
+    public static void Delete(String username){
         try{
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
-            ps.setInt(1,userID);
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE Username = ?");
+            ps.setString(1,username);
             ps.executeUpdate();
         }catch(Exception e){
             System.out.println(e.getMessage());

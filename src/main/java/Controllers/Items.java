@@ -1,12 +1,12 @@
-package Controller;
+package Controllers;
+
 import Server.Main;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class Items {
 
-    public static void addItems(String ItemName, double Price, String URL ) {
+    public static void add(String ItemName, double Price, String URL ) {
         try {
             PreparedStatement ps = Main.db.prepareStatement(
                     "INSERT INTO Items (ItemName, Price, URL) VALUES (?,?,?)");
@@ -20,7 +20,7 @@ public class Items {
         }
     }
 
-    public static void updateItems(String og, String ItemName, double Price, String URL) {
+    public static void update(String og, String ItemName, double Price, String URL) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement(
@@ -33,6 +33,16 @@ public class Items {
             ps.execute();
         } catch (Exception exception) {
             System.out.println("Database error: "+ exception.getMessage());
+        }
+    }
+
+    public static void delete(String name){
+        try{
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Items WHERE ItemName = ?");
+            ps.setString(1,name);
+            ps.executeUpdate();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
         }
     }
 }
