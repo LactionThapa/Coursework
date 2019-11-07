@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 
 public class Items {
 
-    public static void add(String ItemName, double Price, String URL ) {
+    public static void New(String ItemName, double Price, String URL ) {
         try {
             PreparedStatement ps = Main.db.prepareStatement(
                     "INSERT INTO Items (ItemName, Price, URL) VALUES (?,?,?)");

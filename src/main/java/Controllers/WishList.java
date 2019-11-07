@@ -1,66 +1,39 @@
 package Controllers;
 
-import Server.OldMain;
+import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class WishList {
-    //This method inserts data in the database
-    public static void Add(int userID, String listname, Boolean status){
+
+    @POST
+    @Path("New")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String New(@FormDataParam("userID") int userID, @FormDataParam("listname") String listname, @FormDataParam("status") Boolean status)
+    {
         try{
-            PreparedStatement ps = OldMain.db.prepareStatement("INSERT INTO WishLists (UserID, ListName, Public) Values(?,?,?)");
+            if(userID == 0 || listname == null || status == null){
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO WishLists (UserID, ListName, Status) Values(?,?,?)");
             ps.setInt(1,userID);
             ps.setString(2,listname);
             ps.setBoolean(3,status);
             ps.executeUpdate();
-            System.out.println("The wish list has been added to the database");
+            System.out.println("Record added to WishLists table");
+            return "{\"status\": \"OK\"}";
         }catch(Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("Error");
-        }
-    }
-
-    //This method a pre-existing data in the database
-    public static void Update(int listID, String listname, Boolean status){
-        try{
-            PreparedStatement ps = OldMain.db.prepareStatement("UPDATE WishLists SET ListName = ?, Public = ?, WHERE ListID = ?");
-            ps.setString(2, listname);
-            ps.setBoolean(3, status);
-            ps.setInt(1, listID);
-            ps.executeUpdate();
-            System.out.println("The wish list has been updated");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    //This method selects a row of data
-    public static void ListWishLists() {
-        try
-        {
-            PreparedStatement ps = OldMain.db.prepareStatement("SELECT * FROM WishLists");
-            ResultSet results = ps.executeQuery();
-            while (results.next()) {
-                int listID = results.getInt(1);
-                String userID = results.getString(2);
-                String listName = results.getString(3);
-                Boolean status = results.getBoolean(4);
-                System.out.println(listID + " " + userID + " " + listName + " " + status);
-            }
-        } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
+            return "{\"error\": \"Unable add items, please see server console for more info.\"}";
         }
+    }
 
-    }
-    public static void Delete(String listname){
-        try{
-            PreparedStatement ps = OldMain.db.prepareStatement("DELETE FROM WishLists WHERE ListName = ?");
-            ps.setString(1,listname);
-            ps.executeUpdate();
-            System.out.println("The wish list has been removed from the WishList table in the database");
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
+
 }

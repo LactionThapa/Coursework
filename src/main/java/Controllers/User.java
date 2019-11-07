@@ -41,25 +41,65 @@ public class User {
 
     //This method a pre-existing data in the database
     @POST
-    @Path("update")
+    @Path("reset")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public static String Update(@FormDataParam("username") String username, @FormDataParam("password") String password, @FormDataParam("ogemailaddress") String ogemailaddress, @FormDataParam("emailaddress") String emailaddress)
+    public static String Reset(@FormDataParam("username") String username, @FormDataParam("password") String password)
     {
         try{
-            if(username == null || password == null || emailaddress == null){
+            if(username == null || password == null){
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET Username = ?, Password = ?, EmailAddress = ? WHERE EmailAddress = ?");
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setString(3, emailaddress);
-            ps.setString(4, ogemailaddress);
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET Password = ? WHERE Username = ?");
+            ps.setString(2, username);
+            ps.setString(1, password);
             ps.executeUpdate();
             return "{\"status\": \"OK\"}";
         } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+            return "{\"error\": \"Unable to reset password, please see server console for more info.\"}";
+        }
+    }
+
+    @POST
+    @Path("rename")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public static String Rename(@FormDataParam("oldUsername") String oldUsername, @FormDataParam("newUsername") String newUsername)
+    {
+        try{
+            if(oldUsername == null || newUsername == null){
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET Username = ? WHERE Username = ?");
+            ps.setString(1, newUsername);
+            ps.setString(2, oldUsername);
+            ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
+        } catch (Exception e) {
+            System.out.println("Database error: " + e.getMessage());
+            return "{\"error\": \"Unable to rename username, please see server console for more info.\"}";
+        }
+    }
+
+    @POST
+    @Path("email")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public static String Email(@FormDataParam("username") String username, @FormDataParam("emailaddress") String emailaddress)
+    {
+        try{
+            if(username == null || emailaddress == null){
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET EmailAddress = ? WHERE Username = ?");
+            ps.setString(2, username);
+            ps.setString(1, emailaddress);
+            ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
+        } catch (Exception e) {
+            System.out.println("Database error: " + e.getMessage());
+            return "{\"error\": \"Unable to change email, please see server console for more info.\"}";
         }
     }
 
@@ -68,7 +108,7 @@ public class User {
     @Path("new")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String Add(@FormDataParam("username") String username, @FormDataParam("password") String password, @FormDataParam("emailaddress") String emailaddress)
+    public String New(@FormDataParam("username") String username, @FormDataParam("password") String password, @FormDataParam("emailaddress") String emailaddress)
     {
         try{
             if(username == null || password == null || emailaddress == null){
@@ -83,7 +123,7 @@ public class User {
             return "{\"status\": \"OK\"}";
         }catch(Exception e){
             System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+            return "{\"error\": \"Unable to create new user, please see server console for more info.\"}";
         }
     }
 
@@ -104,7 +144,7 @@ public class User {
             return "{\"status\": \"OK\"}";
         }catch(Exception e){
             System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
+            return "{\"error\": \"Unable to delete user, please see server console for more info.\"}";
         }
     }
 }

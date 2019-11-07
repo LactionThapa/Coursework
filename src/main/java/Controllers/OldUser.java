@@ -10,15 +10,14 @@ public class OldUser {
     public static void ListUsers() {
         try
         {
-            PreparedStatement ps = OldMain.db.prepareStatement("SELECT UserID, Username, Password, EmailAddress FROM Users");
+            PreparedStatement ps = OldMain.db.prepareStatement("SELECT Username, Password, EmailAddress FROM Users");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                int userID = results.getInt(1);
-                String username = results.getString(2);
-                String password = results.getString(3);
-                String emailAddress = results.getString(4);
-                System.out.println(userID + " " + username + " " + password + " " + emailAddress);
+                String username = results.getString(1);
+                String password = results.getString(2);
+                String emailAddress = results.getString(3);
+                System.out.println(username + " " + password + " " + emailAddress);
             }
 
         } catch (Exception e) {
@@ -28,22 +27,44 @@ public class OldUser {
     }
 
     //This method a pre-existing data in the database
-    public static void Update(int userID, String username, String password, String emailAddress){
+    public static void Reset(String username, String password){
         try{
-            PreparedStatement ps = OldMain.db.prepareStatement("UPDATE Users SET Username = ?, Password = ?, EmailAddress = ? WHERE UserID = ?");
-            ps.setInt(4, userID);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setString(3, emailAddress);
+            PreparedStatement ps = OldMain.db.prepareStatement("UPDATE Users SET Password = ? WHERE Username = ? ");
+            ps.setString(2, username);
+            ps.setString(1, password);
             ps.executeUpdate();
-            System.out.println("The record has been updated");
+            System.out.println("Your password has been reset");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void Rename(String newUsername, String oldUsername){
+        try{
+            PreparedStatement ps = OldMain.db.prepareStatement("UPDATE Users SET Username = ? WHERE Username = ? ");
+            ps.setString(1, newUsername);
+            ps.setString(2,oldUsername);
+            ps.executeUpdate();
+            System.out.println("Your username has been changed");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void Email(String email, String username){
+        try{
+            PreparedStatement ps = OldMain.db.prepareStatement("UPDATE Users SET EmailAddress = ? WHERE Username = ? ");
+            ps.setString(1, email);
+            ps.setString(2, username);
+            ps.executeUpdate();
+            System.out.println("Your email has been changed");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     //This method inserts data in the database
-    public static void Add(String username, String password, String emailAddress){
+    public static void New(String username, String password, String emailAddress){
         try{
             PreparedStatement ps = OldMain.db.prepareStatement("INSERT INTO Users (Username, Password, EmailAddress) Values(?,?,?)");
             ps.setString(1,username);
