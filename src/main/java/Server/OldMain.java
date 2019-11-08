@@ -1,8 +1,10 @@
 package Server;
 
 import Controllers.OldUser;
-import org.sqlite.SQLiteConfig;
+import Controllers.OldWishList;
+import Controllers.OldItems;
 
+import org.sqlite.SQLiteConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -37,6 +39,7 @@ public class OldMain {
     public static void main(String[] args) {
 
         openDatabase("Database.db");
+        OldWishList.ListWishLists();
         closeDatabase();
     }
 }
