@@ -128,10 +128,17 @@ public class WishList {
             if(listId == null){
                 throw new Exception("One ore more form data parameters are missing in the HTTP request.");
             }
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM WishLists WHERE ListID = ?");
-            ps.setInt(1,listId);
-            ps.executeUpdate();
-            return "{\"status\": \"OK\"}";
+            PreparedStatement ps1 = Main.db.prepareStatement("Select ListName From WishLists Where ListID = ?");
+            ps1.setInt(1,listId);
+            ResultSet results = ps1.executeQuery();
+            if(results.next()){
+                PreparedStatement ps = Main.db.prepareStatement("DELETE FROM WishLists WHERE ListID = ?");
+                ps.setInt(1,listId);
+                ps.executeUpdate();
+                return "{\"status\": \"OK\"}";
+            } else {
+                return "{\"error\": \"There isn\'t a list with that ID\"}";
+            }
         }catch(Exception e){
             System.out.println(e.getMessage());
             return "{\"error\": \"Unable to delete wishList, please see server console for more info.\"}";

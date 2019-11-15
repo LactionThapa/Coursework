@@ -94,34 +94,6 @@ public class User {
         return null;
     }
 
-    @GET
-    @Path("list")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String ListUsers() {
-        System.out.println("Users/list");
-        JSONArray list = new JSONArray();
-        try
-        {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID, Username, Password, EmailAddress FROM Users");
-
-            ResultSet results = ps.executeQuery();
-            while (results.next()) {
-                JSONObject item = new JSONObject();
-                int userID = results.getInt(1);
-                String username = results.getString(2);
-                String password = results.getString(3);
-                String emailAddress = results.getString(4);
-                System.out.println(userID + " " + username + " " + password + " " + emailAddress);
-            }
-            return list.toString();
-        } catch (Exception e) {
-            System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to list items, please see server console for more info.\"}";
-        }
-
-    }
-
-    //This method a pre-existing data in the database
     @POST
     @Path("reset")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -193,16 +165,16 @@ public class User {
     @Path("new")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String New(@FormDataParam("username") String username, @FormDataParam("password") String password, @FormDataParam("emailaddress") String emailaddress)
+    public String New(@FormDataParam("username") String username, @FormDataParam("password") String password, @FormDataParam("email") String emailAddress)
     {
         try{
-            if(username == null || password == null || emailaddress == null){
+            if(username == null || password == null || emailAddress == null){
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (Username, Password, EmailAddress) Values(?,?,?)");
             ps.setString(1,username);
             ps.setString(2,password);
-            ps.setString(3,emailaddress);
+            ps.setString(3,emailAddress);
             ps.executeUpdate();
             System.out.println("Record add to Users table");
             return "{\"status\": \"OK\"}";
