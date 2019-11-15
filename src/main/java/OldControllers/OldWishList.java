@@ -1,15 +1,15 @@
-package Controllers;
+package OldControllers;
 
-import Server.OldMain;
+import OldServer.OldMain;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class OldWishList {
     //This method inserts data in the database
-    public static void New(int userID, String listname, Boolean status){
+    public static void Add(int userID, String listname, Boolean status){
         try{
-            PreparedStatement ps = OldMain.db.prepareStatement("INSERT INTO WishLists (UserID, ListName, Public) Values(?,?,?)");
+            PreparedStatement ps = OldMain.db.prepareStatement("INSERT INTO WishLists (UserID, ListName, Status) Values(?,?,?)");
             ps.setInt(1,userID);
             ps.setString(2,listname);
             ps.setBoolean(3,status);
@@ -28,7 +28,7 @@ public class OldWishList {
             ps.setString(1, listname);
             ps.setInt(2, listID);
             ps.executeUpdate();
-            System.out.println("List name has been updated");
+            System.out.println("The name of the list has been changed");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -38,7 +38,7 @@ public class OldWishList {
         try{
             PreparedStatement ps = OldMain.db.prepareStatement("UPDATE WishLists SET Status = ? WHERE ListID = ?");
             ps.setBoolean(1, status);
-            ps.setInt(2, listID);
+            ps.setInt(2,listID);
             ps.executeUpdate();
             System.out.println("The status of the list has been updated");
         } catch (Exception e) {
@@ -50,25 +50,24 @@ public class OldWishList {
     public static void ListWishLists() {
         try
         {
-            PreparedStatement ps = OldMain.db.prepareStatement("SELECT UserID, ListName, Status FROM WishLists");
+            PreparedStatement ps = OldMain.db.prepareStatement("SELECT ListName, Status FROM WishLists");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
-                String userID = results.getString(1);
-                String listName = results.getString(2);
-                Boolean status = results.getBoolean(3);
-                System.out.println(userID + " " + listName + " " + status);
+                String listName = results.getString(1);
+                Boolean status = results.getBoolean(2);
+                System.out.println(listName + " " + status);
             }
         } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
         }
 
     }
-    public static void Delete(String listId){
+    public static void Delete(int listId){
         try{
             PreparedStatement ps = OldMain.db.prepareStatement("DELETE FROM WishLists WHERE ListID = ?");
-            ps.setString(1,listId);
+            ps.setInt(1,listId);
             ps.executeUpdate();
-            System.out.println("The wish list has been removed from the database");
+            System.out.println("The wish list has been removed from the WishList table in the database");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

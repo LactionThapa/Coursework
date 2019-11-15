@@ -1,6 +1,7 @@
-package Server;
+package OldServer;
 
-import Controllers.OldUser;
+import OldControllers.OldListItems;
+
 import org.sqlite.SQLiteConfig;
 
 import java.sql.Connection;
@@ -37,6 +38,7 @@ public class OldMain {
     public static void main(String[] args) {
 
         openDatabase("Database.db");
+        OldListItems.Delete(1,1);
         closeDatabase();
     }
 }

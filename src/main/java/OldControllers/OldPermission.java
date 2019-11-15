@@ -1,7 +1,8 @@
-package Controllers;
-import Server.OldMain;
+package OldControllers;
+import OldServer.OldMain;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class OldPermission {
     public static void Add(int listid, int userid){
@@ -27,5 +28,22 @@ public class OldPermission {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+    public static void List() {
+        try
+        {
+            PreparedStatement ps = OldMain.db.prepareStatement("SELECT ListID, UserID FROM Permission");
+
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                int listId = results.getInt(1);
+                int userId = results.getInt(2);
+                System.out.println("ListID: "+ listId + " UserID: " + userId);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+
     }
 }

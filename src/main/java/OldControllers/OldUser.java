@@ -1,6 +1,6 @@
-package Controllers;
+package OldControllers;
 
-import Server.OldMain;
+import OldServer.OldMain;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

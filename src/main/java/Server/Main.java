@@ -29,19 +29,9 @@ public class Main {
 
     }
 
-    //This is the method that closes the database
-    private static void closeDatabase(){
-        try {
-            db.close(); //closes the database
-            System.out.println("Disconnected from database.");
-        } catch (Exception exception) {
-            System.out.println("Database disconnection error: " + exception.getMessage());
-        }
-    }
-    //This is the main method
     public static void main(String[] args) {
 
-        openDatabase("database.db");
+        openDatabase("Database.db");
 
         ResourceConfig config = new ResourceConfig();
         config.packages("Controllers");
