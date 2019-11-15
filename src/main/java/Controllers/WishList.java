@@ -101,10 +101,17 @@ public class WishList {
             if(listID == null || status == null){
                 throw new Exception("One ore more form data parameters are missing in the HTTP request.");
             }
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET Status = ? WHERE ListID = ?");
-            ps.setBoolean(1, status);
-            ps.setInt(2,listID);
-            ps.executeUpdate();
+            PreparedStatement ps1 = Main.db.prepareStatement("SELECT ListName FROM WishLists WHERE ListID = ?");
+            ps1.setInt(1,listID);
+            ResultSet results = ps1.executeQuery();
+            if(results.next()) {
+                PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET Status = ? WHERE ListID = ?");
+                ps.setBoolean(1, status);
+                ps.setInt(2, listID);
+                ps.executeUpdate();
+            } else{
+                return "{\"error\": \"There isn\'t a list with that ID\"}";
+            }
             return "{\"status\": \"OK\"}";
         } catch (Exception e) {
             System.out.println(e.getMessage());
