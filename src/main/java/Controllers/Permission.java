@@ -19,7 +19,6 @@ public class Permission {
         {
             JSONArray list = new JSONArray();
             PreparedStatement ps = Main.db.prepareStatement("SELECT ListID, UserID FROM Permission");
-
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();

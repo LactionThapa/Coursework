@@ -19,14 +19,13 @@ public class WishList {
     @Path("list")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String ListWishLists(@FormDataParam("token") String token) {
+    public String ListWishLists(@FormDataParam("userID") Integer userID) {
+        JSONArray list = new JSONArray();
         try
         {
-            if(token == null){
+            if(userID == null){
                 throw new Exception("One ore more form data parameters are missing in the HTTP request.");
             }
-            Integer userID = User.validateTokenv2(token);
-            JSONArray list = new JSONArray();
             PreparedStatement ps = Main.db.prepareStatement("SELECT ListName, Status FROM WishLists WHERE UserID = ?");
             ps.setInt(1,userID);
             ResultSet results = ps.executeQuery();
@@ -45,14 +44,15 @@ public class WishList {
     }
 
     @POST
-    @Path("new")
+    @Path("add")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String New(@FormDataParam("userID") Integer userID,@FormDataParam("listName") String listName,@FormDataParam("status") Boolean status){
+    public String New(@FormDataParam("token") String token,@FormDataParam("listName") String listName,@FormDataParam("status") Boolean status){
         try{
-            if (userID == null || listName == null || status == null){
+            if (token == null || listName == null || status == null){
                 throw new Exception("One ore more form data parameters are missing in the HTTP request.");
             }
+            int userID = User.validateTokenv2(token);
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO WishLists (UserID, ListName, Status) Values(?,?,?)");
             ps.setInt(1,userID);
             ps.setString(2,listName);
@@ -69,18 +69,20 @@ public class WishList {
     @Path("rename")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String Rename(@FormDataParam("listID") Integer listID, @FormDataParam("listName") String listName){
+    public String Rename(@FormDataParam("token") String token,@FormDataParam("oldListName") String oldListName, @FormDataParam("listName") String listName){
         try{
-            if(listID == null || listName == null){
+            if(token == null || oldListName == null || listName == null){
                 throw new Exception("One ore more form data parameters are missing in the HTTP request.");
             }
-            PreparedStatement ps1 = Main.db.prepareStatement("SELECT ListName FROM WishLists WHERE ListID = ?");
-            ps1.setInt(1,listID);
+            int userID = User.validateTokenv2(token);
+            PreparedStatement ps1 = Main.db.prepareStatement("SELECT ListName FROM WishLists WHERE UserID = ?");
+            ps1.setInt(1,userID);
             ResultSet results = ps1.executeQuery();
             if(results.next()){
-                PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET ListName = ? WHERE ListID = ?");
+                PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET ListName = ? WHERE UserID = ? And ListName = ?");
                 ps.setString(1, listName);
-                ps.setInt(2, listID);
+                ps.setInt(2, userID);
+                ps.setString(3,oldListName);
                 ps.executeUpdate();
                 return "{\"status\": \"OK\"}";
             } else {
@@ -96,18 +98,19 @@ public class WishList {
     @Path("status")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String Status(@FormDataParam("listID") Integer listID,@FormDataParam("status") Boolean status){
+    public String Status(@FormDataParam("token") String token,@FormDataParam("listName") String listName, @FormDataParam("status") Boolean status){
         try{
-            if(listID == null || status == null){
+            if(token == null || listName == null ||status == null){
                 throw new Exception("One ore more form data parameters are missing in the HTTP request.");
             }
-            PreparedStatement ps1 = Main.db.prepareStatement("SELECT ListName FROM WishLists WHERE ListID = ?");
-            ps1.setInt(1,listID);
+            int userID = User.validateTokenv2(token);
+            PreparedStatement ps1 = Main.db.prepareStatement("SELECT ListName FROM WishLists WHERE UserID = ?");
+            ps1.setInt(1,userID);
             ResultSet results = ps1.executeQuery();
             if(results.next()) {
-                PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET Status = ? WHERE ListID = ?");
+                PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET Status = ? WHERE UserID = ?");
                 ps.setBoolean(1, status);
-                ps.setInt(2, listID);
+                ps.setInt(2, userID);
                 ps.executeUpdate();
             } else{
                 return "{\"error\": \"There isn\'t a list with that ID\"}";
@@ -123,17 +126,19 @@ public class WishList {
     @Path("delete")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String Delete(@FormDataParam("listID") Integer listId){
+    public String Delete(@FormDataParam("token") String token, @FormDataParam("listName") String listName){
         try{
-            if(listId == null){
+            if(token == null || listName == null){
                 throw new Exception("One ore more form data parameters are missing in the HTTP request.");
             }
-            PreparedStatement ps1 = Main.db.prepareStatement("Select ListName From WishLists Where ListID = ?");
-            ps1.setInt(1,listId);
+            int userID = User.validateTokenv2(token);
+            PreparedStatement ps1 = Main.db.prepareStatement("Select ListName From WishLists Where UserID = ?");
+            ps1.setInt(1,userID);
             ResultSet results = ps1.executeQuery();
             if(results.next()){
-                PreparedStatement ps = Main.db.prepareStatement("DELETE FROM WishLists WHERE ListID = ?");
-                ps.setInt(1,listId);
+                PreparedStatement ps = Main.db.prepareStatement("DELETE FROM WishLists WHERE UserID = ? And ListName = ?");
+                ps.setString(2,listName);
+                ps.setInt(1,userID);
                 ps.executeUpdate();
                 return "{\"status\": \"OK\"}";
             } else {
