@@ -19,20 +19,18 @@ public class WishList {
     @Path("list")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String ListWishLists(@FormDataParam("userID") Integer userID) {
+    public String ListWishLists() {
         JSONArray list = new JSONArray();
         try
         {
-            if(userID == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
-            }
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ListName, Status FROM WishLists WHERE UserID = ?");
-            ps.setInt(1,userID);
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID, ListName, Status, UserID FROM WishLists");
             ResultSet results = ps.executeQuery();
             while (results != null && results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("listName", results.getString(1));
-                item.put("Status",results.getBoolean(2));
+                item.put("ListID", results.getString(1));
+                item.put("ListName", results.getString(2));
+                item.put("Status",results.getBoolean(3));
+                item.put("UserID", results.getString(4));
                 list.add(item);
             }
             return list.toString();

@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -8,9 +8,39 @@
 </head>
 
 <body onload="pageLoad()">
+
 <div id="content">
-    <div id="testDiv"></div>
+
+    <div id="pageHeader">
+        <div class="floatRight"><button id="newButton" class="editButton">Add New List</button></div>
+        <h1>User's list</h1>
+    </div>
+
+    <div id="listDiv"></div>
+
+    <div id="editDiv">
+        <h2 id="editHeading"></h2>
+        <form id="fruitForm">
+            <input type="hidden" name="id" id="ListID">
+            <div>
+                <label for="ListName" class="label">Name:</label>
+                <input type="text" name="name" id="ListName">
+            </div>
+            <div>
+                <label for="status" class="label">Image:</label>
+                <input type="text" name="image" id="Status">
+            </div>
+            <div>
+                <input type="submit" value="Save" id="saveButton">
+                <input type="submit" value="Cancel" id="cancelButton">
+            </div>
+        </form>
+    </div>
+
 </div>
+
 </body>
 
+
 </html>
+
