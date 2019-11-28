@@ -48,3 +48,28 @@ function pageLoad() {
     //document.getElementById("cancelButton").addEventListener("click", cancelEditFruit);
 
 }
+
+function editList(event) {
+    const id = event.target.getAttribute("data-id");
+
+    if (id === null){
+        fetch('/Wishlist/get/' + id, {method: 'get'}
+        ).then(repsonse => response.json()
+        ).then(list => {
+            if (list.hasOwnProperty('error')) {
+                alert(list.error);
+            } else {
+                document.getElementById("editHeading").innerHTML = 'Add new list: ';
+
+                document.getElementById("fruitId").value = '';
+                document.getElementById("fruitName").value = '';
+                document.getElementById("fruitImage").value = '';
+                document.getElementById("fruitColour").value = '';
+                document.getElementById("fruitSize").value = '';
+
+                document.getElementById("listDiv").style.display = 'none';
+                document.getElementById("editDiv").style.display = 'block';
+            }
+        })
+    }
+}
