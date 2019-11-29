@@ -18,28 +18,39 @@ public class User {
     @Path("login")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String loginUser(@FormDataParam("username") String username, @FormDataParam("password") String password){
+    public String loginUser(@FormDataParam("username") String username,
+                            @FormDataParam("password") String password){
         try{
-            PreparedStatement ps1 = Main.db.prepareStatement("SELECT Password FROM Users WHERE Username = ?");
-            ps1.setString(1,username);
-            ResultSet loginResults = ps1.executeQuery();
-            if(loginResults.next()) {
-                String correctPassword = loginResults.getString(1);
-                if(password.equals(correctPassword)){
-                    String token = UUID.randomUUID().toString();
-                    PreparedStatement ps2 = Main.db.prepareStatement("UPDATE Users SET Token = ? WHERE Username = ?");
-                    ps2.setString(1,token);
-                    ps2.setString(2,username);
-                    ps2.executeUpdate();
-                    return "{\"Token\": \""+token+"\"}";
-                } else {
-                    return "{\"error\": \"Incorrect password!\"}";
-                }
-            } else {
-                return "{\"error\": \"Unknown user!\"}";
+            if (username == null ||
+                    password == null){
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
+
+            PreparedStatement statement1 = Main.db.prepareStatement(
+                    "SELECT Username, Password, SessionToken FROM Users WHERE Username = ? "
+            );
+            statement1.setString(1,username);
+            ResultSet results = statement1.executeQuery();
+
+            if(results != null && results.next()) {
+                if(!password.equals(results.getString("Password"))) {
+                    return "{\"error\": \"Incorrect password\"}";
+                }
+
+                String token = UUID.randomUUID().toString();
+                PreparedStatement ps2 = Main.db.prepareStatement(
+                        "UPDATE Users SET SessionToken = ? WHERE Username = ?"
+                );
+                ps2.setString(1,token);
+                ps2.setString(2,username);
+                ps2.executeUpdate();
+
+                return "{\"Token\": \""+token+"\"}";
+            } else {
+                return "{\"error\": \"Unknown User\"}";
+                }
         } catch(Exception exception){
-            System.out.println("Databse error during /user/login: " + exception.getMessage());
+            System.out.println("Database error during /user/login: " + exception.getMessage());
             return "{\"error\": \"Server side error!\"}";
         }
     }
@@ -48,11 +59,11 @@ public class User {
     @Path("logout")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public void logout(@FormDataParam("token") String token) {
+    public void logout(@CookieParam("sessionToken") String token) {
 
         System.out.println("Logging out user");
         try {
-            PreparedStatement ps = Main.db.prepareStatement("Update Users SET Token = NULL WHERE Token = ?");
+            PreparedStatement ps = Main.db.prepareStatement("Update Users SET SessionToken = NULL WHERE SessionToken = ?");
             ps.setString(1, token);
             ps.executeUpdate();
         } catch (Exception resultsException) {
