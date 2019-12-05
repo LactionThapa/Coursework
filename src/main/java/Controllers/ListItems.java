@@ -8,35 +8,39 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Path("ListItem/")
 public class ListItems {
 
     @GET
-    @Path("list")
+    @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String List() {
-        try
-        {
-            System.out.println("thing/list");
-            JSONArray list = new JSONArray();
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ItemID, Quantity, MarkedUserID FROM ListItems");
+    public String getThing(@PathParam("id") Integer id) throws Exception {
+        if (id == null) {
+            throw new Exception("Thing's 'id' is missing in the HTTP request's URL.");
+        }
+        try {
 
+            JSONObject item = new JSONObject();
+            PreparedStatement ps = Main.db.prepareStatement(
+                    "Select ListItems.ListID, Items.ItemName, ListItems.Quantity, ListItems.MarkedUserID " +
+                            "From ListItems Inner Join Items on ListItems.ItemID=Items.ItemID Where ListItems.ListID = ?");
+            ps.setInt(1, id);
             ResultSet results = ps.executeQuery();
-            while (results.next()) {
-                JSONObject item = new JSONObject();
-                item.put("listID",results.getInt(1));
-                item.put("userID",results.getInt(2));
-                item.put("quantity",results.getInt(3));
-                item.put("marker",results.getInt(4));
+            if (results.next()) {
+                item.put("ItemName",results.getString(2));
+                item.put("Quantity",results.getInt(3));
+                item.put("MarkedUserID",results.getInt(4));
             }
-            return list.toString();
+            return item.toString();
+
         } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to list listItems, please se server console for more info.\"}";
+            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
-
     }
+
 
     @POST
     @Path("delete")

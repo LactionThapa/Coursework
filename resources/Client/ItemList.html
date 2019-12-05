@@ -2,15 +2,15 @@
 <html>
 
 <head>
-    <title>Demo page</title>
+    <title>Item's List</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
-    <script src="/client/js/index.js"></script>
+    <script src="/client/js/ItemList.js"></script>
 </head>
 
 <body id="body" onload="pageLoad()">
 <ul>
     <li><a href="/client/UserPage.html">My List</a></li>
-    <li><a class="active" href="/client/WishList.html">Friend's List</a></li>
+    <li><a href="/client/WishList.html">Friend's List</a></li>
     <li style="float:right"><button id="profile" src="logo.png" alt="avatar" class="Avatar"></button></li>
 </ul>
 
@@ -25,15 +25,19 @@
 
     <div id="editDiv">
         <h2 id="editHeading"></h2>
-        <form id="fruitForm">
+        <form id="listForm">
             <input type="hidden" name="id" id="ListID">
             <div>
-                <label for="ListName" class="label">Name:</label>
-                <input type="text" name="name" id="ListName">
+                <label for="ItemName" class="label">Name:</label>
+                <input type="text" name="name" id="ItemName">
             </div>
             <div>
-                <label for="status" class="label">Image:</label>
-                <input type="text" name="image" id="Status">
+                <label for="Quantity" class="label">Image:</label>
+                <input type="text" name="image" id="Quantity">
+            </div>
+            <div>
+                <label for="MarkedUserID" class="label">Image:</label>
+                <input type="text" name="image" id="MarkedUserID">
             </div>
             <div>
                 <input type="submit" value="Save" id="saveButton">
