@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.UUID;
 
-@Path("User/")
+@Path("user/")
 public class User {
 
     @POST

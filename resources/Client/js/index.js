@@ -1,75 +1,93 @@
 function pageLoad() {
 
-    let listsHTML = `<table style="width:100%">` +
-        '<tr>' +
-        '<th style="text-align: left;">ListID</th>' +
-        '<th style="text-align: left;">ListName</th>' +
-        '<th style="text-align: left;">Status</th>' +
-        '<th style="text-align: left;">UserID</th>' +
-        '<th style="text-align: left;" class="last">Options</th>' +
-        '</tr>';
+    if(window.location.search === '?logout') {
+        document.getElementById('content').innerHTML = '<h1>Logging out, please wait...</h1>';
+        logout();
+    } else {
+        document.getElementById("loginButton").addEventListener("click", login);
+    }
 
-    fetch('/WishList/list', {method: 'get'}
+}
+
+function login(event) {
+
+    event.preventDefault();
+
+    const form = document.getElementById("loginForm");
+    const formData = new FormData(form);
+
+    fetch("/user/login", {method: 'post', body: formData}
     ).then(response => response.json()
-    ).then(lists => {
+    ).then(responseData => {
 
-        for (let list of lists) {
+        if (responseData.hasOwnProperty('error')) {
+            alert(responseData.error);
+        } else {
+            Cookies.set("username", responseData.username);
+            Cookies.set("token", responseData.token);
 
-            listsHTML += `<tr>` +
-                `<td>${list.ListID}</td>` +
-                `<td>${list.ListName}</td>` +
-                `<td>${list.Status}</td>` +
-                `<td>${list.UserID}</td>` +
-                `<td class="last">` +
-                `<button class='editButton' data-id='${list.ListId}'>Edit</button>` +
-                `<button class='deleteButton' data-id='${list.ListId}'>Delete</button>` +
-                `</td>` +
-                `</tr>`;
+            window.location.href = '/client/UserPage.html';
+        }
+    });
+}
+
+function logout() {
+
+    fetch("/user/logout", {method: 'post'}
+    ).then(response => response.json()
+    ).then(responseData => {
+        if (responseData.hasOwnProperty('error')) {
+
+            alert(responseData.error);
+
+        } else {
+
+            Cookies.remove("username");
+            Cookies.remove("token");
+
+            window.location.href = '/client/index.html';
 
         }
-
-        listsHTML += '</table>';
-
-        document.getElementById("listDiv").innerHTML = listsHTML;
-
-        /*let editButtons = document.getElementsByClassName("editButton");
-        for (let button of editButtons) {
-            button.addEventListener("click", editFruit);
-        }*/
-
-        /*let deleteButtons = document.getElementsByClassName("deleteButton");
-        for (let button of deleteButtons) {
-            button.addEventListener("click", deleteFruit);
-        }*/
-
     });
 
-    //document.getElementById("saveButton").addEventListener("click", saveEditFruit);
-    //document.getElementById("cancelButton").addEventListener("click", cancelEditFruit);
-
 }
 
-function editList(event) {
-    const id = event.target.getAttribute("data-id");
+function checkLogin() {
 
-    if (id === null){
-        fetch('/Wishlist/get/' + id, {method: 'get'}
-        ).then(repsonse => response.json()
-        ).then(list => {
-            if (list.hasOwnProperty('error')) {
-                alert(list.error);
-            } else {
-                document.getElementById("editHeading").innerHTML = 'Add new list: ';
+    let username = Cookies.get("username");
 
-                document.getElementById("fruitId").value = '';
-                document.getElementById("fruitName").value = '';
-                document.getElementById("fruitImage").value = '';
-                document.getElementById("fruitColour").value = '';
-                document.getElementById("fruitSize").value = '';
+    let logInHTML = '';
 
-                document.getElementById("listDiv").style.display = 'none';
-                document.getElementById("editDiv").style.display = 'block';
-            }
-        })
+    if (username === undefined) {
+
+        let editButtons = document.getElementsByClassName("editButton");
+        for (let button of editButtons) {
+            button.style.visibility = "hidden";
+        }
+
+        let deleteButtons = document.getElementsByClassName("deleteButton");
+        for (let button of deleteButtons) {
+            button.style.visibility = "hidden";
+        }
+
+        logInHTML = "Not logged in. <a href='/client/login.html'>Log in</a>";
+    } else {
+
+        let editButtons = document.getElementsByClassName("editButton");
+        for (let button of editButtons) {
+            button.style.visibility = "visible";
+        }
+
+        let deleteButtons = document.getElementsByClassName("deleteButton");
+        for (let button of deleteButtons) {
+            button.style.visibility = "visible";
+        }
+
+        logInHTML = "Logged in as " + username + ". <a href='/client/login.html?logout'>Log out</a>";
+
     }
+
+    document.getElementById("loggedInDetails").innerHTML = logInHTML;
+
 }
+
