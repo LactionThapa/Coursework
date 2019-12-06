@@ -1,4 +1,5 @@
-function pageLoad() {
+function pageLoad(event) {
+    const id = event.target.getAttribute("data-id");
     let ItemListHTML = `<table style="width:100%">` +
         '<tr>' +
         '<th style="text-align: left;">ItemName</th>' +

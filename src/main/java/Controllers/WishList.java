@@ -23,14 +23,14 @@ public class WishList {
         JSONArray list = new JSONArray();
         try
         {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID, ListName, Status, UserID FROM WishLists");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status  FROM WishLists");
             ResultSet results = ps.executeQuery();
             while (results != null && results.next()) {
                 JSONObject item = new JSONObject();
                 item.put("ListID", results.getString(1));
                 item.put("ListName", results.getString(2));
-                item.put("Status",results.getBoolean(3));
-                item.put("UserID", results.getString(4));
+                item.put("Status",results.getBoolean(2));
+                //item.put("UserID", results.getString(4));
                 list.add(item);
             }
             return list.toString();
@@ -39,6 +39,30 @@ public class WishList {
             return "{\"error\": \"Unable to list items, please se server console for more info.\"}";
         }
 
+    }
+
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getList(@PathParam("id") Integer id) {
+        JSONObject item = new JSONObject();
+        try {
+            if (id == null) {
+                throw new Exception("Fruit's 'id' is missing in the HTTP request's URL.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status FROM WishLists WHERE ListID = ?");
+            ps.setInt(1, id);
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                item.put("ListID", results.getInt(1));
+                item.put("ListName", results.getString(2));
+                item.put("Status", results.getBoolean(3));
+            }
+            return item.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get fruit, please see server console for more info.\"}";
+        }
     }
 
     @POST

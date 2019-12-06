@@ -131,3 +131,14 @@ li a:hover:not(.active) {
     display: inline;
     float: right
 }
+
+.ID{
+    display: none;
+}
+#things a{
+    text-decoration: none;
+    color: black;
+}
+#things a:hover{
+    color: green;
+}
