@@ -11,7 +11,17 @@
 <ul>
     <li><a href="/client/UserPage.html">My List</a></li>
     <li><a href="/client/WishList.html">Friend's List</a></li>
-    <li style="float:right"><button id="profile" src="logo.png" alt="avatar" class="Avatar"></button></li>
+    <li style="float:right">
+        <div class="dropdown">
+            <button id="profile" onclick="myFunction()" class="dropbtn">
+                <img src="logo.png" alt="Avatar" class="avatar">
+            </button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">Logout</a>
+                <a href="#">Settings</a>
+            </div>
+        </div>
+    </li>
 </ul>
 
 <div id="content">

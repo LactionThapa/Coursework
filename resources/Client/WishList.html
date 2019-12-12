@@ -7,14 +7,22 @@
     <script src="/client/js/WishList.js"></script>
 </head>
 
-<body id="body" onload="pageLoad()">
+<body id="body" >
 <ul>
     <li><a href="/client/UserPage.html">My List</a></li>
     <li><a class="active" href="/client/WishList.html">Friend's List</a></li>
-    <li style="float:right"><button id="profile" src="logo.png" alt="avatar" class="Avatar"></button></li>
 </ul>
+<div class="dropdown" style="float:right">
+    <button class="profile" onclick="myFunction()" id="dropbtn">
+        <img src="logo.png" class="profile">
+    </button>
+    <div id="myDropdown" class="dropdown-content">
+        <a href="#">Logout</a>
+        <a href="#">Settings</a>
+    </div>
+</div>
 
-<div id="content">
+<!--<div id="content">
 
     <div id="pageHeader">
         <div class="floatRight"><button id="newButton" class="editButton">Add New List</button></div>
@@ -43,7 +51,7 @@
     </div>
 
 </div>
-
+-->
 </body>
 
 
