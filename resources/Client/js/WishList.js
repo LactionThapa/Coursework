@@ -1,11 +1,9 @@
 function pageLoad() {
-
     let listsHTML = `<table style="width:100%">` +
         '<tr>' +
         '<th style="text-align: left;" class="ID">ListID</th>' +
         '<th style="text-align: left;">ListName</th>' +
         '<th style="text-align: left;">Status</th>' +
-        //'<th style="text-align: left;">UserID</th>' +
         '<th style="text-align: left;" class="last">Options</th>' +
         '</tr>';
 
@@ -17,9 +15,8 @@ function pageLoad() {
 
             listsHTML += `<tr>` +
                 `<td class="ID">${list.ListID}</td>` +
-                `<td id="things"><a href="/client/ItemList.html" data-id='${list.ListID}'>${list.ListName}</td>` +
+                `<td id="things"><a href="/client/ItemList.html">${list.ListName}</td>` +
                 `<td>${list.Status}</td>` +
-                //`<td>${list.UserID}</td>` +
                 `<td class="last">` +
                 `<button class='editButton' data-id='${list.ListID}'>Edit</button>` +
                 `<button class='deleteButton' data-id='${list.ListID}'>Delete</button>` +

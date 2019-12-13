@@ -1,5 +1,5 @@
-function pageLoad(event) {
-    const id = event.target.getAttribute("data-id");
+function pageLoad() {
+    let id = 1;
     let ItemListHTML = `<table style="width:100%">` +
         '<tr>' +
         '<th style="text-align: left;">ItemName</th>' +
@@ -8,7 +8,7 @@ function pageLoad(event) {
         '<th style="text-align: left;" class="last">Options</th>' +
         '</tr>';
 
-    fetch('/ListItem/get/{id}', {method: 'get'}
+    fetch('/ListItem/get/{id}' + id, {method: 'get'}
     ).then(response => response.json()
     ).then(lists => {
 
@@ -26,8 +26,28 @@ function pageLoad(event) {
 
         }
 
-        listsHTML += '</table>';
+        ItemListHTML += '</table>';
 
-        document.getElementById("listDiv").innerHTML = listsHTML;
+        document.getElementById("listDiv").innerHTML = ItemListHTML;
     });
+}
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
 }

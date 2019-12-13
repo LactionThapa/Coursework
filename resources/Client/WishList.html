@@ -2,31 +2,30 @@
 <html>
 
 <head>
-    <title>Demo page</title>
+    <title>My List</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
     <script src="/client/js/WishList.js"></script>
 </head>
 
 <body id="body" >
-<ul>
-    <li><a href="/client/UserPage.html">My List</a></li>
-    <li><a class="active" href="/client/WishList.html">Friend's List</a></li>
-</ul>
-<div class="dropdown" style="float:right">
-    <button class="profile" onclick="myFunction()" id="dropbtn">
-        <img src="logo.png" class="profile">
-    </button>
-    <div id="myDropdown" class="dropdown-content">
-        <a href="#">Logout</a>
-        <a href="#">Settings</a>
+<div class="navbar">
+    <a href="/client/WishList.html" class="active">My List</a>
+    <a href="#Friends List">Friends List</a>
+    <div class="dropdown" style="float: right">
+        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+        </div>
     </div>
 </div>
 
-<!--<div id="content">
+
+<div id="content">
 
     <div id="pageHeader">
         <div class="floatRight"><button id="newButton" class="editButton">Add New List</button></div>
-        <h1>User's list</h1>
     </div>
 
     <div id="listDiv"></div>
@@ -51,7 +50,6 @@
     </div>
 
 </div>
--->
 </body>
 
 
