@@ -1,5 +1,6 @@
 function pageLoad() {
-    let id = 1;
+    let qs = getQueryStringParameters();
+    let id = Number(qs["id"]);
     let ItemListHTML = `<table style="width:100%">` +
         '<tr>' +
         '<th style="text-align: left;">ItemName</th>' +
@@ -50,4 +51,17 @@ window.onclick = function(event) {
             }
         }
     }
+}
+
+function getQueryStringParameters() {
+    let params = [];
+    let q = document.URL.split('?')[1];
+    if (q !== undefined) {
+        q = q.split('&');
+        for (let i = 0; i < q.length; i++) {
+            let bits = q[i].split('=');
+            params[bits[0]] = bits[1];
+        }
+    }
+    return params;
 }

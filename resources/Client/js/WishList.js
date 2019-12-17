@@ -15,7 +15,7 @@ function pageLoad() {
 
             listsHTML += `<tr>` +
                 `<td class="ID">${list.ListID}</td>` +
-                `<td id="things"><a href="/client/ItemList.html">${list.ListName}</td>` +
+                `<td id="things"><a href="/client/ItemList.html?id=${list.ListID}">${list.ListName}</a></td>` +
                 `<td>${list.Status}</td>` +
                 `<td class="last">` +
                 `<button class='editButton' data-id='${list.ListID}'>Edit</button>` +
@@ -81,22 +81,3 @@ function editList(event) {
 
 }
 
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
-}

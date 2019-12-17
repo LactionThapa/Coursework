@@ -26,7 +26,7 @@ function login(event) {
             Cookies.set("username", responseData.username);
             Cookies.set("token", responseData.token);
 
-            window.location.href = '/client/UserPage.html';
+            window.location.href = '/client/WishList.html';
         }
     });
 }
@@ -70,7 +70,7 @@ function checkLogin() {
             button.style.visibility = "hidden";
         }
 
-        logInHTML = "Not logged in. <a href='/client/login.html'>Log in</a>";
+        logInHTML = "Not logged in. <a href='/client/index.html'>Log in</a>";
     } else {
 
         let editButtons = document.getElementsByClassName("editButton");
@@ -83,7 +83,7 @@ function checkLogin() {
             button.style.visibility = "visible";
         }
 
-        logInHTML = "Logged in as " + username + ". <a href='/client/login.html?logout'>Log out</a>";
+        logInHTML = "Logged in as " + username + ". <a href='/client/index.html?logout'>Log out</a>";
 
     }
 

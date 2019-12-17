@@ -89,6 +89,9 @@ public class User {
         return null;
     }
 
+    @GET
+    @Path("userID")
+
     public static Integer validateTokenv2(String token) {
         try {
             PreparedStatement statement = Main.db.prepareStatement("SELECT UserID FROM Users WHERE Token = ?");

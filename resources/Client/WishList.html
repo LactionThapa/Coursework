@@ -7,16 +7,14 @@
     <script src="/client/js/WishList.js"></script>
 </head>
 
-<body id="body" >
+<body id="body" onload="pageLoad()">
 <div class="navbar">
     <a href="/client/WishList.html" class="active">My List</a>
     <a href="#Friends List">Friends List</a>
-    <div class="dropdown" style="float: right">
-        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-        <div id="myDropdown" class="dropdown-content">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
+    <div class="dropdown">
+        <button class="dropbtn">Avatar</button>
+        <div class="dropdown-content">
+            <a href="#">Settings</a>
         </div>
     </div>
 </div>
@@ -25,7 +23,7 @@
 <div id="content">
 
     <div id="pageHeader">
-        <div class="floatRight"><button id="newButton" class="editButton">Add New List</button></div>
+        <div style="float: right"><button id="newButton" class="editButton">Add New List</button></div>
     </div>
 
     <div id="listDiv"></div>
