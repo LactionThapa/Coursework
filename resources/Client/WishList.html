@@ -15,6 +15,7 @@
         <button class="dropbtn">Avatar</button>
         <div class="dropdown-content">
             <a href="#">Settings</a>
+            <a id="loggedInDetails"></a>
         </div>
     </div>
 </div>
@@ -30,15 +31,15 @@
 
     <div id="editDiv">
         <h2 id="editHeading"></h2>
-        <form id="fruitForm">
-            <input type="hidden" name="id" id="ListID">
+        <form id="listForm">
+            <input type="hidden" name="ListID" id="ListID">
             <div>
                 <label for="ListName" class="label">Name:</label>
-                <input type="text" name="name" id="ListName">
+                <input type="text" name="ListName" id="ListName">
             </div>
             <div>
-                <label for="status" class="label">Status:</label>
-                <input type="text" name="status" id="Status">
+                <label for="Status" class="label">Status:</label>
+                <input type="text" name="Status" id="Status">
             </div>
             <div>
                 <input type="submit" value="Save" id="saveButton">

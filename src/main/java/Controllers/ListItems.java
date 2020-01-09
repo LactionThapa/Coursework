@@ -17,23 +17,25 @@ public class ListItems {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getThing(@PathParam("id") Integer id) throws Exception {
-        if (id == null) {
-            throw new Exception("Thing's 'id' is missing in the HTTP request's URL.");
-        }
+        JSONArray list = new JSONArray();
         try {
-
-            JSONObject item = new JSONObject();
+            if (id == null) {
+                throw new Exception("Thing's 'id' is missing in the HTTP request's URL.");
+            }
             PreparedStatement ps = Main.db.prepareStatement(
-                    "Select ListItems.ListID, Items.ItemName, ListItems.Quantity, ListItems.MarkedUserID " +
+                    "Select ListItems.ItemID, Items.ItemName, ListItems.Quantity, ListItems.MarkedUserID " +
                             "From ListItems Inner Join Items on ListItems.ItemID=Items.ItemID Where ListItems.ListID = ?");
             ps.setInt(1, id);
             ResultSet results = ps.executeQuery();
             if (results.next()) {
+                JSONObject item = new JSONObject();
+                item.put("ItemID",results.getInt(1));
                 item.put("ItemName",results.getString(2));
                 item.put("Quantity",results.getInt(3));
                 item.put("MarkedUserID",results.getInt(4));
+                list.add(item);
             }
-            return item.toString();
+            return list.toString();
 
         } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
@@ -85,6 +87,34 @@ public class ListItems {
         }catch(Exception e){
             System.out.println("Database error: " + e.getMessage());
             return "{\"error\": \"Unable to add items to a list, please see server console for more info.\"}";
+        }
+    }
+
+    @POST
+    @Path("update")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updateThing(@FormDataParam("ItemID") Integer ItemID,
+                              @FormDataParam("ItemName") String ItemName,
+                              @FormDataParam("Price") Double Price,
+                              @FormDataParam("URL") String URL) {
+
+        try {
+            if (ItemID == null || ItemName == null || Price == null || URL == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Items SET ItemName = ?, Price = ?, URL = ? WHERE ItemID = ?");
+            ps.setString(1, ItemName);
+            ps.setDouble(2, Price);
+            ps.setString(3, URL);
+            ps.setInt(3, ItemID);
+            ps.execute();
+            return "{\"status\": \"OK\"}";
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
         }
     }
 

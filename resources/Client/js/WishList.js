@@ -6,7 +6,6 @@ function pageLoad() {
         '<th style="text-align: left;">Status</th>' +
         '<th style="text-align: left;" class="last">Options</th>' +
         '</tr>';
-
     fetch('/WishList/list', {method: 'get'}
     ).then(response => response.json()
     ).then(lists => {
@@ -33,16 +32,14 @@ function pageLoad() {
         for (let button of editButtons) {
             button.addEventListener("click", editList);
         }
-        /*
         let deleteButtons = document.getElementsByClassName("deleteButton");
         for (let button of deleteButtons) {
             button.addEventListener("click", deletelist);
         }
-        */
     });
 
-    //document.getElementById("saveButton").addEventListener("click", saveEditlist);
-    //document.getElementById("cancelButton").addEventListener("click", cancelEditlist);
+    document.getElementById("saveButton").addEventListener("click", saveEditlist);
+    document.getElementById("cancelButton").addEventListener("click", cancelEditlist);
 
 }
 
@@ -52,8 +49,9 @@ function editList(event) {
     if (id === null){
         document.getElementById("editHeading").innerHTML = 'Add new list: ';
 
-        document.getElementById("ListName").value = ' ';
-        document.getElementById("Status").value = ' ';
+        document.getElementById("ListID").value = '';
+        document.getElementById("ListName").value = '';
+        document.getElementById("Status").value = '';
 
         document.getElementById("listDiv").style.display = 'none';
         document.getElementById("editDiv").style.display = 'block';
@@ -68,6 +66,7 @@ function editList(event) {
 
                     document.getElementById("editHeading").innerHTML = 'Editing' + list.ListName + ':';
 
+                    document.getElementById("ListID").value = id;
                     document.getElementById("ListName").value = list.ListName;
                     document.getElementById("Status").value = list.Status;
 
@@ -77,7 +76,77 @@ function editList(event) {
                 }
         });
     }
+}
 
+function saveEditlist(event) {
+
+    event.preventDefault();
+
+    if (document.getElementById("ListName").value.trim() === '') {
+        alert("Please provide a fruit name.");
+        return;
+    }
+    if (document.getElementById("Status").value.trim() === '') {
+        alert("Would you like the list to be private or public");
+        return;
+    }
+    const id = document.getElementById("ListID").value;
+    const form = document.getElementById("listForm");
+    const formData = new FormData(form);
+
+    let apiPath = '';
+    if (id === '') {
+        apiPath = '/WishList/add';
+    } else {
+        apiPath = '/WishList/update';
+    }
+
+    fetch(apiPath, {method: 'post', body: formData}
+    ).then(response => response.json()
+    ).then(responseData => {
+
+        if (responseData.hasOwnProperty('error')) {
+            alert(responseData.error);
+        } else {
+            document.getElementById("listDiv").style.display = 'block';
+            document.getElementById("editDiv").style.display = 'none';
+            pageLoad();
+        }
+    });
+}
+
+function cancelEditlist(event) {
+
+    event.preventDefault();
+
+    document.getElementById("listDiv").style.display = 'block';
+    document.getElementById("editDiv").style.display = 'none';
 
 }
+
+function deletelist(event) {
+
+    const ok = confirm("Are you sure?");
+
+    if (ok === true) {
+
+        let id = event.target.getAttribute("data-id");
+        let formData = new FormData();
+        formData.append("ListID", id);
+
+        fetch('/WishList/delete', {method: 'post', body: formData}
+        ).then(response => response.json()
+        ).then(responseData => {
+
+                if (responseData.hasOwnProperty('error')) {
+                    alert(responseData.error);
+                } else {
+                    pageLoad();
+                }
+            }
+        );
+    }
+}
+
+
 

@@ -73,9 +73,13 @@ public class User {
 
     }
 
+    @GET
+    @Path("check")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+
     public static String validateToken(String token) {
         try {
-            PreparedStatement statement = Main.db.prepareStatement("SELECT Username FROM Users WHERE Token = ?");
+            PreparedStatement statement = Main.db.prepareStatement("SELECT Username FROM Users WHERE SessionToken = ?");
             statement.setString(1, token);
             ResultSet results = statement.executeQuery();
             if (results != null && results.next()) {
@@ -89,12 +93,9 @@ public class User {
         return null;
     }
 
-    @GET
-    @Path("userID")
-
     public static Integer validateTokenv2(String token) {
         try {
-            PreparedStatement statement = Main.db.prepareStatement("SELECT UserID FROM Users WHERE Token = ?");
+            PreparedStatement statement = Main.db.prepareStatement("SELECT UserID FROM Users WHERE SessionToken = ?");
             statement.setString(1, token);
             ResultSet results = statement.executeQuery();
             if (results != null && results.next()) {

@@ -1,33 +1,31 @@
 function pageLoad() {
 
-    if(window.location.search === '?logout') {
-        document.getElementById('content').innerHTML = '<h1>Logging out, please wait...</h1>';
-        logout();
-    } else {
-        document.getElementById("loginButton").addEventListener("click", login);
-    }
+    login();
 
 }
 
-function login(event) {
+function login() {
 
-    event.preventDefault();
+    const loginForm = document.getElementById('loginForm');
 
-    const form = document.getElementById("loginForm");
-    const formData = new FormData(form);
+    loginForm.addEventListener("submit", event => {
 
-    fetch("/user/login", {method: 'post', body: formData}
-    ).then(response => response.json()
-    ).then(responseData => {
+        event.preventDefault();
 
-        if (responseData.hasOwnProperty('error')) {
-            alert(responseData.error);
-        } else {
-            Cookies.set("username", responseData.username);
-            Cookies.set("token", responseData.token);
+        let formData = new FormData(loginForm);
 
-            window.location.href = '/client/WishList.html';
-        }
+        fetch('/user/login', {method: 'post', body: formData}
+        ).then(response => response.json()
+        ).then(data => {
+
+                if (data.hasOwnProperty('error')) {
+                    alert(data.error);
+                } else {
+                    Cookies.set("sessionToken", data.token);
+                    window.location.href = '/client/WishList.html/';
+                }
+            }
+        );
     });
 }
 

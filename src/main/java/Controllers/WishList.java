@@ -21,19 +21,20 @@ public class WishList {
     @Produces(MediaType.APPLICATION_JSON)
     public String ListWishLists() {
         JSONArray list = new JSONArray();
-        try
-        {
+
+        try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status  FROM WishLists");
             ResultSet results = ps.executeQuery();
             while (results != null && results.next()) {
                 JSONObject item = new JSONObject();
                 item.put("ListID", results.getString(1));
                 item.put("ListName", results.getString(2));
-                item.put("Status",results.getBoolean(2));
+                item.put("Status", results.getBoolean(2));
                 //item.put("UserID", results.getString(4));
                 list.add(item);
             }
             return list.toString();
+
         } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
             return "{\"error\": \"Unable to list items, please se server console for more info.\"}";
@@ -45,20 +46,25 @@ public class WishList {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getList(@PathParam("id") Integer id) {
-        JSONObject item = new JSONObject();
+        JSONArray list = new JSONArray();
+
         try {
             if (id == null) {
                 throw new Exception("Fruit's 'id' is missing in the HTTP request's URL.");
             }
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status FROM WishLists WHERE ListID = ?");
+
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status FROM WishLists WHERE UserID = ?");
             ps.setInt(1, id);
             ResultSet results = ps.executeQuery();
             if (results.next()) {
+                JSONObject item = new JSONObject();
                 item.put("ListID", results.getInt(1));
                 item.put("ListName", results.getString(2));
                 item.put("Status", results.getBoolean(3));
+                list.add(item);
             }
-            return item.toString();
+            return list.toString();
+
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"error\": \"Unable to get fruit, please see server console for more info.\"}";
@@ -69,106 +75,105 @@ public class WishList {
     @Path("add")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String New(@FormDataParam("token") String token,@FormDataParam("listName") String listName,@FormDataParam("status") Boolean status){
-        try{
-            if (token == null || listName == null || status == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
+    public String New(@FormDataParam("ListName") String listName,
+                      @FormDataParam("Status") Boolean status,
+                      @CookieParam("sessionToken") String token) {
+
+        try {
+            if (listName == null || status == null || token == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
             int userID = User.validateTokenv2(token);
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO WishLists (UserID, ListName, Status) Values(?,?,?)");
-            ps.setInt(1,userID);
-            ps.setString(2,listName);
-            ps.setBoolean(3,status);
+            ps.setInt(1, userID);
+            ps.setString(2, listName);
+            ps.setBoolean(3, status);
             ps.executeUpdate();
             return "{\"status\": \"OK\"}";
-        }catch(Exception e){
+
+        } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
             return "{\"error\": \"Unable to create new list, please see server console for more info.\"}";
         }
     }
 
     @POST
-    @Path("rename")
+    @Path("update")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String Rename(@FormDataParam("token") String token,@FormDataParam("oldListName") String oldListName, @FormDataParam("listName") String listName){
-        try{
-            if(token == null || oldListName == null || listName == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
+    public String updateThing(@FormDataParam("ListID") Integer ListID,
+                              @FormDataParam("ListName") String ListName,
+                              @FormDataParam("Status") Boolean Status) {
+
+        try {
+            if (ListID == null || ListName == null || Status == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            int userID = User.validateTokenv2(token);
-            PreparedStatement ps1 = Main.db.prepareStatement("SELECT ListName FROM WishLists WHERE UserID = ?");
-            ps1.setInt(1,userID);
-            ResultSet results = ps1.executeQuery();
-            if(results.next()){
-                PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET ListName = ? WHERE UserID = ? And ListName = ?");
-                ps.setString(1, listName);
-                ps.setInt(2, userID);
-                ps.setString(3,oldListName);
-                ps.executeUpdate();
-                return "{\"status\": \"OK\"}";
-            } else {
-                return "{\"error\": \"There isn\'t a list with that ID\"}";
-            }
-        } catch (Exception e) {
-            System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to rename the list, please see server console for more info.\"}";
+
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET ListName = ?, Status = ? WHERE ListID = ?");
+            ps.setString(1, ListName);
+            ps.setBoolean(2, Status);
+            ps.setInt(3, ListID);
+            ps.execute();
+            return "{\"status\": \"OK\"}";
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to update item, please see server console for more info.\"}";
         }
     }
 
-    @POST
-    @Path("status")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String Status(@FormDataParam("token") String token,@FormDataParam("listName") String listName, @FormDataParam("status") Boolean status){
-        try{
-            if(token == null || listName == null ||status == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
-            }
-            int userID = User.validateTokenv2(token);
-            PreparedStatement ps1 = Main.db.prepareStatement("SELECT ListName FROM WishLists WHERE UserID = ?");
-            ps1.setInt(1,userID);
-            ResultSet results = ps1.executeQuery();
-            if(results.next()) {
-                PreparedStatement ps = Main.db.prepareStatement("UPDATE WishLists SET Status = ? WHERE UserID = ?");
-                ps.setBoolean(1, status);
-                ps.setInt(2, userID);
-                ps.executeUpdate();
-            } else{
-                return "{\"error\": \"There isn\'t a list with that ID\"}";
-            }
-            return "{\"status\": \"OK\"}";
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return "{\"error\": \"Unable to change the status of the list, please see server console for more info.\"}";
-        }
-    }
 
     @POST
     @Path("delete")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String Delete(@FormDataParam("token") String token, @FormDataParam("listName") String listName){
-        try{
-            if(token == null || listName == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
+    public String Delete(@FormDataParam("ListID") Integer ListID) {
+
+        try {
+            if (ListID == null) {
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
-            int userID = User.validateTokenv2(token);
-            PreparedStatement ps1 = Main.db.prepareStatement("Select ListName From WishLists Where UserID = ?");
-            ps1.setInt(1,userID);
-            ResultSet results = ps1.executeQuery();
-            if(results.next()){
-                PreparedStatement ps = Main.db.prepareStatement("DELETE FROM WishLists WHERE UserID = ? And ListName = ?");
-                ps.setString(2,listName);
-                ps.setInt(1,userID);
-                ps.executeUpdate();
-                return "{\"status\": \"OK\"}";
-            } else {
-                return "{\"error\": \"There isn\'t a list with that ID\"}";
-            }
-        }catch(Exception e){
+
+            PreparedStatement ps = Main.db.prepareStatement("Delete FROM WishLists WHERE ListID=?");
+            ps.setInt(1, ListID);
+            ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return "{\"error\": \"Unable to delete wishList, please see server console for more info.\"}";
         }
     }
+
+    @GET
+    @Path("userID")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String user(@CookieParam("sessionToken") String token){
+
+        int userID = User.validateTokenv2(token);
+
+        JSONArray list = new JSONArray();
+        try{
+            if(token == null){
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+            }
+
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID FROM Users WHERE UserID = ?");
+            ps.setInt(1,userID);
+            ResultSet results = ps.executeQuery();
+            if (results != null && results.next()) {
+                JSONObject item = new JSONObject();
+                item.put("UserID",results.getInt(1));
+                list.add(item);
+            }
+            return list.toString();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return "{\"error\": \"Unable to delete wishList, please see server console for more info.\"}";
+        }
+
+
+    }
+
 }
