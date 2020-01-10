@@ -3,10 +3,6 @@ body {
     font-family: 'Arial', serif;
 }
 
-#body {
-    background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
-}
-
 #pageHeader{
     margin-top: 50px;
 }
@@ -125,11 +121,13 @@ body {
     background-color: dodgerblue;
 }
 
-#loggedInDetails {
-    margin: 0;
-    text-align: right;
-    display: inline;
-    float: right
+.deleteButton, #cancelButton {
+    background-color: indianred;
+    margin-left: 10px;
+}
+
+.editButton {
+    background-color: silver;
 }
 
 .ID{

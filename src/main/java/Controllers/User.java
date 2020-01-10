@@ -45,7 +45,7 @@ public class User {
                 ps2.setString(2,username);
                 ps2.executeUpdate();
 
-                return "{\"Token\": \""+token+"\"}";
+                return "{\"token\": \""+token+"\",\"username\": \""+username+"\"}";
             } else {
                 return "{\"error\": \"Unknown User\"}";
                 }
@@ -59,19 +59,49 @@ public class User {
     @Path("logout")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public void logout(@CookieParam("sessionToken") String token) {
+    public String logoutUser(@CookieParam("token") String token) {
 
-        System.out.println("Logging out user");
         try {
-            PreparedStatement ps = Main.db.prepareStatement("Update Users SET SessionToken = NULL WHERE SessionToken = ?");
-            ps.setString(1, token);
-            ps.executeUpdate();
-        } catch (Exception resultsException) {
-            String error = "Database error - can't update 'Users' table: " + resultsException.getMessage();
-            System.out.println(error);
+
+            System.out.println("user/logout");
+
+            PreparedStatement ps1 = Main.db.prepareStatement("SELECT UserID FROM Users WHERE SessionToken = ?");
+            ps1.setString(1, token);
+            ResultSet logoutResults = ps1.executeQuery();
+            if (logoutResults.next()) {
+
+                int id = logoutResults.getInt(1);
+
+                PreparedStatement ps2 = Main.db.prepareStatement("UPDATE Users SET SessionToken = NULL WHERE UserID = ?");
+                ps2.setInt(1, id);
+                ps2.executeUpdate();
+
+                return "{\"status\": \"OK\"}";
+            } else {
+
+                return "{\"error\": \"Invalid token!\"}";
+
+            }
+
+        } catch (Exception exception){
+            System.out.println("Database error during /user/logout: " + exception.getMessage());
+            return "{\"error\": \"Server side error!\"}";
         }
 
     }
+
+    public static boolean validToken(String token) {
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID FROM Users WHERE SessionToken = ?");
+            ps.setString(1, token);
+            ResultSet logoutResults = ps.executeQuery();
+            return logoutResults.next();
+        } catch (Exception exception) {
+            System.out.println("Database error during /user/logout: " + exception.getMessage());
+            return false;
+        }
+    }
+
 
     @GET
     @Path("check")

@@ -1,33 +1,37 @@
 function pageLoad() {
 
-    login();
+    if(window.location.search === '?logout') {
+        document.getElementById('content').innerHTML = '<h1>Logging out, please wait...</h1>';
+        logout();
+    } else {
+        document.getElementById("loginButton").addEventListener("click", login);
+    }
+
 
 }
 
-function login() {
+function login(event) {
 
-    const loginForm = document.getElementById('loginForm');
+    event.preventDefault();
 
-    loginForm.addEventListener("submit", event => {
+    const form = document.getElementById("loginForm");
+    const formData = new FormData(form);
 
-        event.preventDefault();
+    fetch("/user/login", {method: 'post', body: formData}
+    ).then(response => response.json()
+    ).then(responseData => {
 
-        let formData = new FormData(loginForm);
+        if (responseData.hasOwnProperty('error')) {
+            alert(responseData.error);
+        } else {
+            Cookies.set("username", responseData.username);
+            Cookies.set("token", responseData.token);
 
-        fetch('/user/login', {method: 'post', body: formData}
-        ).then(response => response.json()
-        ).then(data => {
-
-                if (data.hasOwnProperty('error')) {
-                    alert(data.error);
-                } else {
-                    Cookies.set("sessionToken", data.token);
-                    window.location.href = '/client/WishList.html/';
-                }
-            }
-        );
+            window.location.href = '/client/WishList.html';
+        }
     });
 }
+
 
 function logout() {
 
@@ -50,42 +54,5 @@ function logout() {
 
 }
 
-function checkLogin() {
 
-    let username = Cookies.get("username");
-
-    let logInHTML = '';
-
-    if (username === undefined) {
-
-        let editButtons = document.getElementsByClassName("editButton");
-        for (let button of editButtons) {
-            button.style.visibility = "hidden";
-        }
-
-        let deleteButtons = document.getElementsByClassName("deleteButton");
-        for (let button of deleteButtons) {
-            button.style.visibility = "hidden";
-        }
-
-        logInHTML = "Not logged in. <a href='/client/index.html'>Log in</a>";
-    } else {
-
-        let editButtons = document.getElementsByClassName("editButton");
-        for (let button of editButtons) {
-            button.style.visibility = "visible";
-        }
-
-        let deleteButtons = document.getElementsByClassName("deleteButton");
-        for (let button of deleteButtons) {
-            button.style.visibility = "visible";
-        }
-
-        logInHTML = "Logged in as " + username + ". <a href='/client/index.html?logout'>Log out</a>";
-
-    }
-
-    document.getElementById("loggedInDetails").innerHTML = logInHTML;
-
-}
 

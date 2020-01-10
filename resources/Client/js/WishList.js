@@ -1,4 +1,5 @@
 function pageLoad() {
+    checkLogin();
     let listsHTML = `<table style="width:100%">` +
         '<tr>' +
         '<th style="text-align: left;" class="ID">ListID</th>' +
@@ -147,6 +148,19 @@ function deletelist(event) {
         );
     }
 }
+
+function checkLogin() {
+
+    let username = Cookies.get("username");
+
+    if (username === undefined) {
+        window.location.href = '/client/index.html';
+        userHTML = username;
+    }
+
+
+}
+
 
 
 

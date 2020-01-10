@@ -5,21 +5,22 @@
     <title>My List</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
     <script src="/client/js/WishList.js"></script>
+    <script src="/client/js/js.cookie.js"></script>
+
 </head>
 
 <body id="body" onload="pageLoad()">
 <div class="navbar">
-    <a href="/client/WishList.html" class="active">My List</a>
+    <a href="/client/WishList.html" class="active">Home</a>
     <a href="#Friends List">Friends List</a>
     <div class="dropdown">
-        <button class="dropbtn">Avatar</button>
+        <button class="dropbtn" >Avatar</button>
         <div class="dropdown-content">
             <a href="#">Settings</a>
-            <a id="loggedInDetails"></a>
+            <a href='/client/index.html?logout'>Log out</a>
         </div>
     </div>
 </div>
-
 
 <div id="content">
 
