@@ -106,7 +106,6 @@ public class User {
     @GET
     @Path("check")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-
     public static String validateToken(String token) {
         try {
             PreparedStatement statement = Main.db.prepareStatement("SELECT Username FROM Users WHERE SessionToken = ?");
@@ -210,7 +209,7 @@ public class User {
     @Path("new")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String New(@FormDataParam("username") String username, @FormDataParam("password") String password, @FormDataParam("email") String emailAddress)
+    public String New(@FormDataParam("email") String emailAddress, @FormDataParam("username") String username, @FormDataParam("password") String password)
     {
         try{
             if(username == null || password == null || emailAddress == null){

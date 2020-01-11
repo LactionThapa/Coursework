@@ -1,5 +1,4 @@
 function pageLoad() {
-    checkLogin();
     let listsHTML = `<table style="width:100%">` +
         '<tr>' +
         '<th style="text-align: left;" class="ID">ListID</th>' +
@@ -7,9 +6,10 @@ function pageLoad() {
         '<th style="text-align: left;">Status</th>' +
         '<th style="text-align: left;" class="last">Options</th>' +
         '</tr>';
+
     fetch('/WishList/list', {method: 'get'}
     ).then(response => response.json()
-    ).then(lists => {
+    ).then(lists =>{
 
         for (let list of lists) {
 
@@ -58,24 +58,27 @@ function editList(event) {
         document.getElementById("editDiv").style.display = 'block';
 
     } else {
-        fetch('/WishList/get/' + id, {method: 'get'}).
-            then(response => response.json()).
-            then(list => {
-                if (list.hasOwnProperty('error')) {
-                    alert(list.error);
-                } else {
+        fetch('/WishList/get/' + id, {method: 'get'}
+        ).then(response => response.json()
+        ).then(lists => {
 
-                    document.getElementById("editHeading").innerHTML = 'Editing' + list.ListName + ':';
+            if (lists.hasOwnProperty('error')) {
+                alert(lists.error);
+            } else {
 
-                    document.getElementById("ListID").value = id;
-                    document.getElementById("ListName").value = list.ListName;
-                    document.getElementById("Status").value = list.Status;
+                document.getElementById("editHeading").innerHTML = 'Editing ' + lists.ListName + ':';
 
-                    document.getElementById("listDiv").style.display = 'none';
-                    document.getElementById("editDiv").style.display = 'block';
+                document.getElementById("ListID").value = id;
+                document.getElementById("ListName").value = lists.ListName;
+                document.getElementById("Status").value = lists.Status;
 
-                }
+
+                document.getElementById("listDiv").style.display = 'none';
+                document.getElementById("editDiv").style.display = 'block';
+
+            }
         });
+
     }
 }
 
@@ -84,7 +87,7 @@ function saveEditlist(event) {
     event.preventDefault();
 
     if (document.getElementById("ListName").value.trim() === '') {
-        alert("Please provide a fruit name.");
+        alert("Please provide a list name.");
         return;
     }
     if (document.getElementById("Status").value.trim() === '') {
@@ -149,17 +152,6 @@ function deletelist(event) {
     }
 }
 
-function checkLogin() {
-
-    let username = Cookies.get("username");
-
-    if (username === undefined) {
-        window.location.href = '/client/index.html';
-        userHTML = username;
-    }
-
-
-}
 
 
 

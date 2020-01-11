@@ -1,29 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Demo page</title>
+
+    <meta charset="UTF-8">
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
     <script src="/client/js/js.cookie.js"></script>
     <script src="/client/js/index.js"></script>
+
 </head>
-<body onload="pageLoad()">
+
+<body id="body" onload="pageLoad()">
 <div id="content">
-    <h1>Please log in to continue...</h1>
-    <hr />
+<div class="container">
+
+    <div id="login">Log In</div>
+    <div id="signup">Sign Up</div>
+
     <form id="loginForm">
-        <div class="loginDiv">
-            <label for="username">Username: </label>
-            <input type="text" name="username" id="username">
-        </div>
-        <div class="loginDiv">
-            <label for="password">Password: </label>
-            <input type="password" name="password" id="password">
-        </div>
-        <div class="loginDiv">
-            <input type="submit" value="Login" id="loginButton">
+        <div id="login-form">
+            <input type="text" placeholder="Username" class="input" class="username" name="username"><br />
+            <input type="password" placeholder="Password" class="input" class="password" name="password"><br />
+            <div class="btn" id="loginButton">Log In</div>
+            <span><a href="#">I forgot my username or password.</a></span>
         </div>
     </form>
+
+    <form id="SignUpForm">
+        <div id="signup-form">
+            <label for="username"></label>
+            <input type="text" placeholder="Choose a Username" class="input" name="username" id="username"><br />
+            <label for="password"></label>
+            <input type="password" placeholder="Choose a Password" class="input" name="password" id="password">
+            <label for="email"></label>
+            <input type="text" placeholder="Your Email Address" class="input" name="email" id="email"><br />
+            <div class="btn" id="SignUpButton">Create account</div>
+        </div>
+    </form>
+
 </div>
+</div>
+
+
 </body>
 </html>
-

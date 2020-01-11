@@ -2,6 +2,9 @@ body {
     margin: 0;
     font-family: 'Arial', serif;
 }
+#body{
+    background-color: #FFFDD0;
+}
 
 #pageHeader{
     margin-top: 50px;
@@ -101,26 +104,6 @@ body {
     margin-right: 10px;
 }
 
-.loginDiv {
-    font-size: 14pt;
-    margin-top: 40px;
-    margin-left: 20px;
-}
-
-#username, #password {
-    margin-left: 20px;
-    font-size: 14pt;
-}
-
-#loginButton {
-    width: 200px;
-    background-color: cornflowerblue;
-}
-
-#loginButton:hover {
-    background-color: dodgerblue;
-}
-
 .deleteButton, #cancelButton {
     background-color: indianred;
     margin-left: 10px;
@@ -142,3 +125,81 @@ body {
 }
 
 .show {display:block;}
+
+/* This code is for the SignUp Form and the LogIn Form*/
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    width: 45%;
+    margin: 110px auto;
+}
+
+#signup, #login{
+    width: 50%;
+    background: white;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+#signup-form, #login-form{
+    background: #fff;
+    padding: 40px;
+    clear: both;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: block;
+
+}
+
+.input{
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    border: 2px solid #e9eaea;
+    color: #3e3e40;
+    font-size: 14px;
+    outline: none;
+}
+
+.input:focus{
+    border: 2px solid #34b3a0;
+}
+
+.btn{
+    width: 100%;
+    background: #34b3a0;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+span a{
+    text-decoration: none;
+    color: #000;
+}
+
+/* Code for the cards */
+.polaroid {
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+}
+
+.container {
+    padding: 10px;
+}

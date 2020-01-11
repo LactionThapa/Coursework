@@ -19,11 +19,12 @@ public class WishList {
     @Path("list")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String ListWishLists() {
+    public String ListWishLists(@CookieParam("token") String token) {
         JSONArray list = new JSONArray();
-
+        int userID = User.validateTokenv2(token);
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status  FROM WishLists");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status  FROM WishLists WHERE UserID = ?");
+            ps.setInt(1,userID);
             ResultSet results = ps.executeQuery();
             while (results != null && results.next()) {
                 JSONObject item = new JSONObject();
@@ -45,31 +46,28 @@ public class WishList {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getList(@PathParam("id") Integer id) {
-        JSONArray list = new JSONArray();
+    public String getThing(@PathParam("id") Integer id) {
 
+        JSONObject item = new JSONObject();
         try {
             if (id == null) {
-                throw new Exception("Fruit's 'id' is missing in the HTTP request's URL.");
+                throw new Exception("Thing's 'id' is missing in the HTTP request's URL.");
             }
-
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ListID,ListName, Status FROM WishLists WHERE UserID = ?");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ListName, Status FROM WishLists WHERE ListID = ?");
             ps.setInt(1, id);
             ResultSet results = ps.executeQuery();
             if (results.next()) {
-                JSONObject item = new JSONObject();
-                item.put("ListID", results.getInt(1));
-                item.put("ListName", results.getString(2));
-                item.put("Status", results.getBoolean(3));
-                list.add(item);
+                item.put("ListID", id);
+                item.put("ListName", results.getString(1));
+                item.put("Status", results.getBoolean(2));
             }
-            return list.toString();
-
+            return item.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to get fruit, please see server console for more info.\"}";
+            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
         }
     }
+
 
     @POST
     @Path("add")
@@ -77,7 +75,7 @@ public class WishList {
     @Produces(MediaType.APPLICATION_JSON)
     public String New(@FormDataParam("ListName") String listName,
                       @FormDataParam("Status") Boolean status,
-                      @CookieParam("sessionToken") String token) {
+                      @CookieParam("token") String token) {
 
         try {
             if (listName == null || status == null || token == null) {
@@ -146,34 +144,5 @@ public class WishList {
         }
     }
 
-    @GET
-    @Path("userID")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String user(@CookieParam("sessionToken") String token){
-
-        int userID = User.validateTokenv2(token);
-
-        JSONArray list = new JSONArray();
-        try{
-            if(token == null){
-                throw new Exception("One or more form data parameters are missing in the HTTP request.");
-            }
-
-            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID FROM Users WHERE UserID = ?");
-            ps.setInt(1,userID);
-            ResultSet results = ps.executeQuery();
-            if (results != null && results.next()) {
-                JSONObject item = new JSONObject();
-                item.put("UserID",results.getInt(1));
-                list.add(item);
-            }
-            return list.toString();
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            return "{\"error\": \"Unable to delete wishList, please see server console for more info.\"}";
-        }
-
-
-    }
 
 }
