@@ -14,6 +14,8 @@ function start(){
     document.getElementById('login').addEventListener('click',logInForm);
     document.getElementById("loginButton").addEventListener("click", login);
     document.getElementById("SignUpButton").addEventListener("click", signUp);
+
+
 }
 
 function signUpForm() {

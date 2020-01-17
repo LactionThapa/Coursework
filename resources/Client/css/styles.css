@@ -17,16 +17,18 @@ body {
 
 .navbar a {
     float: left;
-    font-size: 16px;
+    font-size: 20px;
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 20px 16px;
     text-decoration: none;
 }
 
 .dropdown {
     float: right;
     overflow: hidden;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .dropdown .dropbtn {
@@ -51,6 +53,8 @@ body {
 .dropbtn {
     border-radius: 50%;
     background-color: #dddddd;
+
+
 }
 
 .dropdown-content {
@@ -107,6 +111,18 @@ body {
 .deleteButton, #cancelButton {
     background-color: indianred;
     margin-left: 10px;
+}
+
+#newButton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 0px;
 }
 
 .editButton {
@@ -202,4 +218,40 @@ span a{
 
 .container {
     padding: 10px;
+}
+
+td {
+    text-align: center;
+}
+
+th {
+    font-size: 20px;
+}
+
+.floatRight {
+    float: right;
+}
+
+/* Container holding the image and the text */
+.container {
+    width: 120px;
+    height: 320px;
+    float: left;
+    margin: 3px;
+    padding: 3px;
+}
+
+/* Bottom right text */
+.text-block {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: black;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+img {
+    max-width:100%;
+    heigth: auto;
 }

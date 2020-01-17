@@ -1,10 +1,10 @@
 function pageLoad() {
-    let listsHTML = `<table style="width:100%">` +
+    let listsHTML = `<table style="width:80%">` +
         '<tr>' +
-        '<th style="text-align: left;" class="ID">ListID</th>' +
-        '<th style="text-align: left;">ListName</th>' +
-        '<th style="text-align: left;">Status</th>' +
-        '<th style="text-align: left;" class="last">Options</th>' +
+        '<th style="text-align: middle;" class="ID">ListID</th>' +
+        '<th style="text-align:  middle;">ListName</th>' +
+        '<th style="text-align:  middle;">Status</th>' +
+        '<th style="text-align:  middle;" class="last">Options</th>' +
         '</tr>';
 
     fetch('/WishList/list', {method: 'get'}

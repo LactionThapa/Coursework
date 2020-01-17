@@ -1,13 +1,13 @@
 function pageLoad() {
     let qs = getQueryStringParameters();
     let id = Number(qs["id"]);
-    let listsHTML = `<table style="width:100%">` +
+    let listsHTML = `<table style="width:80%">` +
         '<tr>' +
-        '<th style="text-align: left;" class="ID">ItemID</th>' +
-        '<th style="text-align: left;">ItemName</th>' +
-        '<th style="text-align: left;">Quantity</th>' +
-        '<th style="text-align: left;">MarkedUserID</th>' +
-        '<th style="text-align: left;" class="last">Options</th>' +
+        '<th style="text-align: middle;" class="ID">ItemID</th>' +
+        '<th style="text-align: middle;">ItemName</th>' +
+        '<th style="text-align: middle;">Quantity</th>' +
+        '<th style="text-align: middle;">MarkedUserID</th>' +
+        '<th style="text-align: middle;" class="last">Options</th>' +
         '</tr>';
 
     fetch('/ListItem/get/' + id, {method: 'get'}
