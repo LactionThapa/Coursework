@@ -1,12 +1,10 @@
 package Controllers;
 
 import Server.Main;
-import Controllers.User;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import Controllers.User;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;

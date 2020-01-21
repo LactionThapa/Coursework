@@ -232,26 +232,3 @@ th {
     float: right;
 }
 
-/* Container holding the image and the text */
-.container {
-    width: 120px;
-    height: 320px;
-    float: left;
-    margin: 3px;
-    padding: 3px;
-}
-
-/* Bottom right text */
-.text-block {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    color: black;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-img {
-    max-width:100%;
-    heigth: auto;
-}
