@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <title>Item's List</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
@@ -21,17 +21,9 @@
 </div>
 
 <div id="content">
-
-    <div class="container">
-        <img id= background src="/client/img/background.jpg" alt="background">
-        <div class="text-block">
-            <h4>Nature</h4>
-            <p>What a beautiful sunrise</p>
-        </div>
-    </div>
-
+    <div class="pageContainer">
     <div id="pageHeader">
-        <div class="floatRight"><button id="newButton" class="editButton">Add New List</button></div>
+        <div class="floatRight"><button id="newButton" class="editButton">Add New Item</button></div>
         <h1 id="heading1"></h1>
     </div>
 
@@ -46,12 +38,20 @@
                 <input type="text" name="name" id="ItemName">
             </div>
             <div>
-                <label for="Quantity" class="label">Image:</label>
-                <input type="text" name="image" id="Quantity">
+                <label for="Price" class="label">Price:</label>
+                <input type="text" name="price" id="Price">
             </div>
             <div>
-                <label for="MarkedUserID" class="label">Image:</label>
-                <input type="text" name="image" id="MarkedUserID">
+                <label for="Quantity" class="label">Quantity:</label>
+                <input type="text" name="quantity" id="Quantity">
+            </div>
+            <div>
+                <label for="URL" class="label">URL:</label>
+                <input type="text" name="priurlce" id="URL">
+            </div>
+            <div >
+                <label for="ListID" class="label">Name:</label>
+                <input type="text" name="id" id="ListID">
             </div>
             <div>
                 <input type="submit" value="Save" id="saveButton">
@@ -59,7 +59,7 @@
             </div>
         </form>
     </div>
-
+    </div>
 </div>
 
 </body>

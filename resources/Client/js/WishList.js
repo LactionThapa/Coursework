@@ -1,5 +1,7 @@
 function pageLoad() {
-    let listsHTML = `<table style="width:80%">` +
+    let username = Cookies.get("username");
+    document.getElementById("user").innerHTML = username;
+    let listsHTML = `</center><table align="center">` +
         '<tr>' +
         '<th style="text-align: middle;" class="ID">ListID</th>' +
         '<th style="text-align:  middle;">ListName</th>' +

@@ -13,36 +13,39 @@ import java.sql.ResultSet;
 public class Items {
 
     @GET
-    @Path("list")
+    @Path("list/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String ListItems() {
+    public String ListWishLists(@PathParam("id") Integer ListID) {
+        JSONArray list = new JSONArray();
+
         try {
-            System.out.println("thing/list");
-            JSONArray list = new JSONArray();
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ItemName, Price, URL FROM Items");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ItemID,ItemName, Price  FROM Items WHERE ListID = ?");
+            ps.setInt(1,ListID);
             ResultSet results = ps.executeQuery();
-            while (results.next()) {
+            while (results != null && results.next()) {
                 JSONObject item = new JSONObject();
-                item.put("listName",results.getString(1));
-                item.put("price",results.getDouble(2));
-                item.put("url",results.getString(3));
+                item.put("ItemID", results.getString(1));
+                item.put("ItemName", results.getString(2));
+                item.put("Price", results.getDouble(3));
                 list.add(item);
             }
             return list.toString();
+
         } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
             return "{\"error\": \"Unable to list items, please se server console for more info.\"}";
         }
+
     }
 
     @POST
     @Path("add")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String add(@FormDataParam("itemName") String ItemName,
-                      @FormDataParam("price") Double Price,
-                      @FormDataParam("url") String URL,
-                      @FormDataParam("quantity") Integer Quantity,
+    public String add(@FormDataParam("ItemName") String ItemName,
+                      @FormDataParam("Price") Double Price,
+                      @FormDataParam("URL") String URL,
+                      @FormDataParam("Quantity") Integer Quantity,
                       @FormDataParam("ListID") Integer ListID) {
         try {
             if(ItemName == null || Price == null || URL == null || Quantity == null || ListID == null){
@@ -92,28 +95,29 @@ public class Items {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getThing(@PathParam("id") Integer ItemID) {
+    public String getItem(@PathParam("id") Integer ItemID) {
+        JSONArray list = new JSONArray();
 
-        JSONObject item = new JSONObject();
         try {
-            if (ItemID == null) {
-                throw new Exception("Thing's 'id' is missing in the HTTP request's URL.");
-            }
-            PreparedStatement ps = Main.db.prepareStatement("SELECT ItemName, Price, Quantity, URL FROM Items WHERE ItemID = ?");
-            ps.setInt(1, ItemID);
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ItemName, Price, Quantity, URL  FROM Items WHERE ItemID = ?");
+            ps.setInt(1,ItemID);
             ResultSet results = ps.executeQuery();
-            if (results.next()) {
+            while (results != null && results.next()) {
+                JSONObject item = new JSONObject();
                 item.put("ItemID", ItemID);
                 item.put("ItemName", results.getString(1));
                 item.put("Price", results.getDouble(2));
                 item.put("Quantity", results.getInt(3));
                 item.put("URL", results.getString(4));
+                list.add(item);
             }
-            return item.toString();
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
+            return list.toString();
+
+        } catch (Exception e) {
+            System.out.println("Database error: " + e.getMessage());
+            return "{\"error\": \"Unable to list items, please se server console for more info.\"}";
         }
+
     }
 
     @POST

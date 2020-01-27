@@ -28,8 +28,7 @@ public class WishList {
                 JSONObject item = new JSONObject();
                 item.put("ListID", results.getString(1));
                 item.put("ListName", results.getString(2));
-                item.put("Status", results.getBoolean(2));
-                //item.put("UserID", results.getString(4));
+                item.put("Status", results.getBoolean(3));
                 list.add(item);
             }
             return list.toString();

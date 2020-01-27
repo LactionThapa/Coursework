@@ -23,30 +23,36 @@
 </div>
 
 <div id="content">
+    <div class="pageContainer">
+        <div class="container1">
+            <img src="/client/img/164551.jpg" alt="gifts" style="width:1150px; height: 300px">
+            <div class="centered" id="user"></div>
+        </div>
 
-    <div id="pageHeader">
-        <div style="float: right"><button id="newButton" class="editButton">Add New List</button></div>
-    </div>
+        <div id="pageHeader">
+            <div style="float: right"><button id="newButton" class="editButton">Add New List</button></div>
+        </div>
 
-    <div id="listDiv"></div>
+        <div id="listDiv"></div>
 
-    <div id="editDiv">
-        <h2 id="editHeading"></h2>
-        <form id="listForm">
-            <input type="hidden" name="ListID" id="ListID">
-            <div>
-                <label for="ListName" class="label">Name:</label>
-                <input type="text" name="ListName" id="ListName">
-            </div>
-            <div>
-                <label for="Status" class="label">Status:</label>
-                <input type="text" name="Status" id="Status">
-            </div>
-            <div>
-                <input type="submit" value="Save" id="saveButton">
-                <input type="submit" value="Cancel" id="cancelButton">
-            </div>
-        </form>
+        <div id="editDiv">
+            <h2 id="editHeading"></h2>
+            <form id="listForm">
+                <input type="hidden" name="ListID" id="ListID">
+                <div >
+                    <label for="ListName" class="label">Name:</label>
+                    <input type="text" name="ListName" id="ListName">
+                </div>
+                <div>
+                    <label for="Status" class="label">Status:</label>
+                    <input type="text" name="Status" id="Status">
+                </div>
+                <div>
+                    <input type="submit" value="Save" id="saveButton">
+                    <input type="submit" value="Cancel" id="cancelButton">
+                </div>
+            </form>
+        </div>
     </div>
 
 </div>

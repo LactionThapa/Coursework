@@ -1,10 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Item</title>
-</head>
-<body>
+<html>
 
+<head>
+    <title>Item</title>
+    <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
+    <script src="/client/js/Item.js"></script>
+    <script src="/client/js/js.cookie.js"></script>
+    <script src="/client/js/querystring.js"></script>
+
+</head>
+
+<body id="body" onload="pageLoad()">
+<div class="navbar">
+    <a href="/client/WishList.html" class="active">Home</a>
+    <a href="#Friends List">Friends List</a>
+    <div class="dropdown">
+        <button class="dropbtn" >Avatar</button>
+        <div class="dropdown-content">
+            <a href="#">Settings</a>
+            <a href='/client/index.html?logout'>Log out</a>
+        </div>
+    </div>
+</div>
+
+<div id="content">
+
+    <div class="imageContainer">
+        <img src="/client/img/164551.jpg" alt="test" style="width: 30%">
+        <div id="ItemContainer">
+            <div id="list"></div>
+            <div id="editDiv">
+                <h2 id="editHeading"></h2>
+                <form id="listForm">
+                    <input type="hidden" name="ID" id="ItemID">
+                    <div >
+                        <label for="ItemName" class="label">Name:</label>
+                        <input type="text" name="name" id="ItemName">
+                    </div>
+                    <div>
+                        <label for="Price" class="label">Status:</label>
+                        <input type="text" name="price" id="Price">
+                    </div>
+                    <div >
+                        <label for="Quantity" class="label">Name:</label>
+                        <input type="text" name="quantity" id="Quantity">
+                    </div>
+                    <div >
+                        <label for="URL" class="label">Name:</label>
+                        <input type="text" name="url" id="URL">
+                    </div>
+                    <div>
+                        <input type="submit" value="Save" id="saveButton">
+                        <input type="submit" value="Cancel" id="cancelButton">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
 </body>
+
+
 </html>
