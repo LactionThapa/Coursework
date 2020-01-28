@@ -2,17 +2,18 @@ function pageLoad() {
     let qs = getQueryStringParameters();
     let id = Number(qs["id"]);
     let listHTML = ``;
-    fetch('/Item/get/' + id, {method: 'get'}
+    fetch('/Item/list/' + id, {method: 'get'}
     ).then(response => response.json()
     ).then(lists => {
         for (let list of lists) {
-            listHTML += `<h1 style="text-align: center;">${list.ItemName}</h1>` +
+            listHTML +=
+                `<h1 style="text-align: center;">${list.ItemName}</h1>` +
                 `<p style="display: none;" ${list.ItemID}</p>`+
                 `<p style="font-size: 20px">Price: &pound${list.Price}</p>`+
                 `<p style="font-size: 20px">Quantity: ${list.Quantity}</p>`+
                 `<button id="BUY"><a href="${list.URL}">BUY</a></button>`+
-                `<button class='editButton' data-id='${list.ItemID}'>Edit</button>` +
-                `<button class='deleteButton' data-id='${list.ItemID}'>Delete</button>`;
+                `<button class='editButton' id='settings' data-id='${list.ItemID}'>Edit</button>` +
+                `<button class='deleteButton' id='settings1' data-id='${list.ItemID}'>Delete</button>`;
 
         }
         document.getElementById("list").innerHTML= listHTML;
@@ -32,43 +33,30 @@ function pageLoad() {
 function editList(event) {
     const id = event.target.getAttribute("data-id");
 
-    if (id === null){
-        document.getElementById("editHeading").innerHTML = 'Add new list: ';
 
-        document.getElementById("ItemID").value = '';
-        document.getElementById("ItemName").value = '';
-        document.getElementById("Price").value = '';
-        document.getElementById("Quantity").value = '';
-        document.getElementById("URL").value = '';
+    fetch('/Item/get/' + id, {method: 'get'}
+    ).then(response => response.json()
+    ).then(lists => {
 
-        document.getElementById("list").style.display = 'none';
-        document.getElementById("editDiv").style.display = 'block';
+        if (lists.hasOwnProperty('error')) {
+            alert(lists.error);
+        } else {
 
-    } else {
-        fetch('/Item/get/' + id, {method: 'get'}
-        ).then(response => response.json()
-        ).then(lists => {
+            document.getElementById("editHeading").innerHTML = 'Editing ' + lists.ItemName + ':';
 
-            if (lists.hasOwnProperty('error')) {
-                alert(lists.error);
-            } else {
-
-                document.getElementById("editHeading").innerHTML = 'Editing ' + lists.ItemName + ':';
-
-                document.getElementById("ItemID").value = id;
-                document.getElementById("ItemName").value = lists.ItemName;
-                document.getElementById("Price").value = lists.Price;
-                document.getElementById("Quantity").value = lists.Quantity;
-                document.getElementById("URL").value = lists.URL;
+            document.getElementById("ItemID").value = id;
+            document.getElementById("ItemName").value = lists.ItemName;
+            document.getElementById("Price").value = lists.Price;
+            document.getElementById("Quantity").value = lists.Quantity;
+            document.getElementById("URL").value = lists.URL;
 
 
-                document.getElementById("list").style.display = 'none';
-                document.getElementById("editDiv").style.display = 'block';
+            document.getElementById("list").style.display = 'none';
+            document.getElementById("editDiv").style.display = 'block';
 
-            }
-        });
+        }
+    });
 
-    }
 }
 
 function saveEditlist(event) {
@@ -91,14 +79,8 @@ function saveEditlist(event) {
     const form = document.getElementById("listForm");
     const formData = new FormData(form);
 
-    let apiPath = '';
-    if (id === '') {
-        apiPath = '/Item/add';
-    } else {
-        apiPath = '/Item/update';
-    }
 
-    fetch(apiPath, {method: 'post', body: formData}
+    fetch('/Item/update/', {method: 'post', body: formData}
     ).then(response => response.json()
     ).then(responseData => {
 
@@ -122,7 +104,6 @@ function cancelEditlist(event) {
 }
 
 function deletelist(event) {
-
     const ok = confirm("Are you sure?");
 
     if (ok === true) {
@@ -138,7 +119,7 @@ function deletelist(event) {
                 if (responseData.hasOwnProperty('error')) {
                     alert(responseData.error);
                 } else {
-                    href="/client/WishList.html";
+                    window.location.href="http://localhost:8081/client/WishList.html" ;
                 }
             }
         );

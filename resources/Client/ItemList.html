@@ -22,6 +22,10 @@
 
 <div id="content">
     <div class="pageContainer">
+        <div class="container1">
+            <img src="/client/img/1245891-geometric-abstract-wallpaper-1920x1080-for-hd-1080p.jpg" alt="gifts" style="width:1150px; height: 300px">
+            <div class="centered" id="user"></div>
+        </div>
     <div id="pageHeader">
         <div class="floatRight"><button id="newButton" class="editButton">Add New Item</button></div>
         <h1 id="heading1"></h1>
@@ -32,26 +36,26 @@
     <div id="editDiv">
         <h2 id="editHeading"></h2>
         <form id="listForm">
-            <input type="hidden" name="id" id="ItemID">
+            <input type="hidden" name="ItemID" id="ItemID">
             <div>
                 <label for="ItemName" class="label">Name:</label>
-                <input type="text" name="name" id="ItemName">
+                <input type="text" name="ItemName" id="ItemName">
             </div>
             <div>
                 <label for="Price" class="label">Price:</label>
-                <input type="text" name="price" id="Price">
+                <input type="text" name="Price" id="Price">
             </div>
             <div>
                 <label for="Quantity" class="label">Quantity:</label>
-                <input type="text" name="quantity" id="Quantity">
+                <input type="text" name="Quantity" id="Quantity">
             </div>
             <div>
                 <label for="URL" class="label">URL:</label>
-                <input type="text" name="priurlce" id="URL">
+                <input type="text" name="URL" id="URL">
             </div>
-            <div >
-                <label for="ListID" class="label">Name:</label>
-                <input type="text" name="id" id="ListID">
+            <div style="display: none;">
+                <label for="ListID" class="label">ListID:</label>
+                <input type="text" name="ListID" id="ListID">
             </div>
             <div>
                 <input type="submit" value="Save" id="saveButton">

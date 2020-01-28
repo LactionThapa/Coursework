@@ -5,7 +5,6 @@
     <title>Item</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
     <script src="/client/js/Item.js"></script>
-    <script src="/client/js/js.cookie.js"></script>
     <script src="/client/js/querystring.js"></script>
 
 </head>
@@ -26,35 +25,40 @@
 <div id="content">
 
     <div class="imageContainer">
-        <img src="/client/img/164551.jpg" alt="test" style="width: 30%">
         <div id="ItemContainer">
+
             <div id="list"></div>
+
             <div id="editDiv">
+
                 <h2 id="editHeading"></h2>
+
                 <form id="listForm">
-                    <input type="hidden" name="ID" id="ItemID">
+                    <input type="hidden" name="ItemID" id="ItemID">
                     <div >
                         <label for="ItemName" class="label">Name:</label>
-                        <input type="text" name="name" id="ItemName">
+                        <input type="text" name="ItemName" id="ItemName">
                     </div>
                     <div>
-                        <label for="Price" class="label">Status:</label>
-                        <input type="text" name="price" id="Price">
+                        <label for="Price" class="label">Price:</label>
+                        <input type="text" name="Price" id="Price">
                     </div>
                     <div >
-                        <label for="Quantity" class="label">Name:</label>
-                        <input type="text" name="quantity" id="Quantity">
+                        <label for="Quantity" class="label">Quantity:</label>
+                        <input type="text" name="Quantity" id="Quantity">
                     </div>
                     <div >
-                        <label for="URL" class="label">Name:</label>
-                        <input type="text" name="url" id="URL">
+                        <label for="URL" class="label">URL:</label>
+                        <input type="text" name="URL" id="URL">
                     </div>
                     <div>
                         <input type="submit" value="Save" id="saveButton">
                         <input type="submit" value="Cancel" id="cancelButton">
                     </div>
                 </form>
+
             </div>
+
         </div>
     </div>
 

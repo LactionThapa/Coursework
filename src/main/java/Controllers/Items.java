@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 public class Items {
 
     @GET
-    @Path("list/{id}")
+    @Path("listItem/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String ListWishLists(@PathParam("id") Integer ListID) {
         JSONArray list = new JSONArray();
@@ -69,10 +69,10 @@ public class Items {
     @Path("update")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String update(@FormDataParam("itemName") String ItemName,
-                      @FormDataParam("price") Double Price,
-                      @FormDataParam("url") String URL,
-                      @FormDataParam("quantity") Integer Quantity,
+    public String update(@FormDataParam("ItemName") String ItemName,
+                      @FormDataParam("Price") Double Price,
+                      @FormDataParam("URL") String URL,
+                      @FormDataParam("Quantity") Integer Quantity,
                       @FormDataParam("ItemID") Integer ItemID) {
         try {
             if(ItemName == null || Price == null || URL == null || Quantity == null || ItemID == null){
@@ -93,7 +93,7 @@ public class Items {
     }
 
     @GET
-    @Path("get/{id}")
+    @Path("list/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getItem(@PathParam("id") Integer ItemID) {
         JSONArray list = new JSONArray();
@@ -118,6 +118,33 @@ public class Items {
             return "{\"error\": \"Unable to list items, please se server console for more info.\"}";
         }
 
+    }
+
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getThing(@PathParam("id") Integer ItemID) {
+
+        JSONObject item = new JSONObject();
+        try {
+            if (ItemID == null) {
+                throw new Exception("Thing's 'id' is missing in the HTTP request's URL.");
+            }
+            PreparedStatement ps = Main.db.prepareStatement("SELECT ItemName, Price, Quantity, URL FROM Items WHERE ItemID = ?");
+            ps.setInt(1, ItemID);
+            ResultSet results = ps.executeQuery();
+            if (results.next()) {
+                item.put("ItemID", ItemID);
+                item.put("ItemName", results.getString(1));
+                item.put("Price", results.getDouble(2));
+                item.put("Quantity", results.getInt(3));
+                item.put("URL", results.getString(4));
+            }
+            return item.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to get item, please see server console for more info.\"}";
+        }
     }
 
     @POST

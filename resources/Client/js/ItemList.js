@@ -1,7 +1,8 @@
-let listID;
+let ListID;
 function pageLoad() {
     let qs = getQueryStringParameters();
-    listID = Number(qs["id"]);
+    let id = Number(qs["id"]);
+    ListID = id;
     let listsHTML = `<table style="width:80%">` +
         '<tr>' +
         '<th style="text-align: middle;" class="ID">ItemID</th>' +
@@ -10,7 +11,7 @@ function pageLoad() {
         '<th style="text-align: middle;" class="last">Options</th>' +
         '</tr>';
 
-    fetch('/Item/list/' + listID, {method: 'get'}
+    fetch('/Item/listItem/' + id, {method: 'get'}
     ).then(response => response.json()
     ).then(lists => {
         for (let list of lists) {
@@ -18,7 +19,7 @@ function pageLoad() {
             listsHTML += `<tr>` +
                 `<td class="ID">${list.ItemID}</td>` +
                 `<td id="things"><a href="/client/Item.html?id=${list.ItemID}"</a>${list.ItemName}</td>` +
-                `<td> &#163 ${list.Price}</td>` +
+                `<td> &pound${list.Price}</td>` +
                 `<td class="last">` +
                 `<button class='deleteButton' data-id='${list.ItemID}'>Delete</button>` +
                 `</td>` +
@@ -48,9 +49,6 @@ function pageLoad() {
 }
 
 function editList(event) {
-    const id = event.target.getAttribute("data-id");
-
-    if (id === null){
         document.getElementById("editHeading").innerHTML = 'Add new list: ';
 
         document.getElementById("ItemID").value = '';
@@ -58,12 +56,12 @@ function editList(event) {
         document.getElementById("Price").value = '';
         document.getElementById("URL").value = '';
         document.getElementById("Quantity").value = '';
-        document.getElementById("ListID").value = listID;
+        document.getElementById("ListID").value = ListID;
 
         document.getElementById("listDiv").style.display = 'none';
         document.getElementById("editDiv").style.display = 'block';
+        document.getElementById("newButton").style.display = 'none';
 
-    }
 }
 
 function saveEditlist(event) {
@@ -86,14 +84,7 @@ function saveEditlist(event) {
     const form = document.getElementById("listForm");
     const formData = new FormData(form);
 
-    let apiPath = '';
-    if (id === '') {
-        apiPath = '/Item/add';
-    } else {
-        apiPath = '/Item/update';
-    }
-
-    fetch(apiPath, {method: 'post', body: formData}
+    fetch('/Item/add/', {method: 'post', body: formData}
     ).then(response => response.json()
     ).then(responseData => {
 
@@ -102,6 +93,7 @@ function saveEditlist(event) {
         } else {
             document.getElementById("listDiv").style.display = 'block';
             document.getElementById("editDiv").style.display = 'none';
+            document.getElementById("newButton").style.display = 'block';
             pageLoad();
         }
     });
@@ -113,6 +105,7 @@ function cancelEditlist(event) {
 
     document.getElementById("listDiv").style.display = 'block';
     document.getElementById("editDiv").style.display = 'none';
+    document.getElementById("newButton").style.display = 'block';
 
 }
 

@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'Arial', serif;
-    background-color: #D0D2FF;
+    background-image: url("/client/img/1245875-beautiful-geometric-abstract-wallpaper-1920x1080.jpg");
 }
 
 #pageHeader{
@@ -92,6 +92,7 @@ body {
 
 #editDiv {
     display: none;
+    text-align: center;
 }
 #listDiv {
     z-index: 0;
@@ -109,6 +110,8 @@ body {
 .deleteButton, #cancelButton {
     background-color: indianred;
     margin-left: 10px;
+    padding: 2.5px 10px;
+    font-size: 15px;
 }
 
 #newButton {
@@ -125,6 +128,8 @@ body {
 
 .editButton {
     background-color: silver;
+    padding: 2.5px 10px;
+    font-size: 15px;
 }
 
 .ID{
@@ -250,12 +255,12 @@ table{
 }
 
 .pageContainer{
-    border-style: groove;
-    border-width: 1px;
     margin: auto;
     width: 1150px;
     height: 900px;
-    background-color:#FFFDD0 ;
+    background-color:white;
+    box-border: 0 10px 10px 0 grey;
+    border: none;
 }
 
 .imageContainer{
@@ -273,7 +278,7 @@ table{
     border-width: 1px;
     width: 750px;
     height: 525px;
-    background-color: white;
+    background-color: #DCDCDC;
     float:right;
 }
 .imageContainer:after {
@@ -284,23 +289,19 @@ table{
 
 #BUY {
     display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color: #fff;
+    opacity: 1;
     background-color: #4CAF50;
+    color: white;
+    transition: 0.3s;
+    padding: 10px 18px;
+    text-decoration: none;
     border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
+    border-radius: 3px;
+
 }
 
-#BUY:hover {background-color: #3e8e41}
+#BUY:hover {opacity: 0.6;}
 
-#BUY:active {
-    background-color: #3e8e41;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
+#settings, #settings1 {
+    float: right;
 }
