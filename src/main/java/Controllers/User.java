@@ -102,10 +102,6 @@ public class User {
         }
     }
 
-
-    @GET
-    @Path("check")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     public static String validateToken(String token) {
         try {
             PreparedStatement statement = Main.db.prepareStatement("SELECT Username FROM Users WHERE SessionToken = ?");
@@ -157,50 +153,6 @@ public class User {
         } catch (Exception e) {
             System.out.println("Database error: " + e.getMessage());
             return "{\"error\": \"Unable to reset password, please see server console for more info.\"}";
-        }
-    }
-
-    @POST
-    @Path("rename")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public static String Rename(@FormDataParam("token") String token, @FormDataParam("newUsername") String newUsername)
-    {
-        try{
-            if(token == null || newUsername == null){
-                throw new Exception("One or more form data parameters are missing in the HTTP request.");
-            }
-            String currentUsername = User.validateToken(token);
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET Username = ? WHERE Username = ?");
-            ps.setString(1, newUsername);
-            ps.setString(2, currentUsername);
-            ps.executeUpdate();
-            return "{\"status\": \"OK\"}";
-        } catch (Exception e) {
-            System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to rename username, please see server console for more info.\"}";
-        }
-    }
-
-    @POST
-    @Path("email")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public static String Email(@FormDataParam("token") String token, @FormDataParam("emailAddress") String emailAddress)
-    {
-        try{
-            if(token == null || emailAddress == null){
-                throw new Exception("One or more form data parameters are missing in the HTTP request.");
-            }
-            String username = User.validateToken(token);
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Users SET EmailAddress = ? WHERE Username = ?");
-            ps.setString(2, username);
-            ps.setString(1, emailAddress);
-            ps.executeUpdate();
-            return "{\"status\": \"OK\"}";
-        } catch (Exception e) {
-            System.out.println("Database error: " + e.getMessage());
-            return "{\"error\": \"Unable to change email, please see server console for more info.\"}";
         }
     }
 

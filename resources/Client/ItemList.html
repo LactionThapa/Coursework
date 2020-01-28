@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
     <script src="/client/js/ItemList.js"></script>
     <script src="/client/js/querystring.js"></script>
+    <script src="/client/js/js.cookie.js"></script>
 </head>
 
 <body id="body" onload="pageLoad()">
@@ -13,9 +14,10 @@
     <a href="/client/WishList.html" class="active">My List</a>
     <a href="#Friends List">Friends List</a>
     <div class="dropdown">
-        <button class="dropbtn">Avatar</button>
+        <button class="dropbtn"><div id="UsersName"></div></button>
         <div class="dropdown-content">
             <a href="#">Settings</a>
+            <a href='/client/index.html?logout'>Log out</a>
         </div>
     </div>
 </div>

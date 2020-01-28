@@ -148,66 +148,6 @@ public class Items {
     }
 
     @POST
-    @Path("rename")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String Rename(@FormDataParam("itemName") String itemName,@FormDataParam("itemID") Integer itemId) {
-        try {
-            if(itemName == null || itemId == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
-            }
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Items SET ItemName = ? WHERE ItemID = ?");
-            ps.setString(1, itemName);
-            ps.setInt(2,itemId);
-            ps.execute();
-            return "{\"status\": \"OK\"}";
-        } catch (Exception exception) {
-            System.out.println("Database error: "+ exception.getMessage());
-            return "{\"error\": \"Unable to rename the item, please see server console for more info.\"}";
-        }
-    }
-
-    @POST
-    @Path("reprice")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String Reprice(@FormDataParam("price") Double price,@FormDataParam("itemID") Integer itemId) {
-        try {
-            if(price == null || itemId == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
-            }
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Items SET Price = ? WHERE ItemID = ?");
-            ps.setDouble(1, price);
-            ps.setInt(2,itemId);
-            ps.execute();
-            return "{\"status\": \"OK\"}";
-        } catch (Exception exception) {
-            System.out.println("Database error: "+ exception.getMessage());
-            return "{\"error\": \"Unable to reprice the item, please see server console for more info.\"}";
-        }
-    }
-
-    @POST
-    @Path("url")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String URL(@FormDataParam("url") String url,@FormDataParam("itemId") Integer itemId) {
-        try {
-            if(url == null || itemId == null){
-                throw new Exception("One ore more form data parameters are missing in the HTTP request.");
-            }
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Items SET URL = ? WHERE ItemID = ?");
-            ps.setString(1, url);
-            ps.setInt(2,itemId);
-            ps.execute();
-            return "{\"status\": \"OK\"}";
-        } catch (Exception exception) {
-            System.out.println("Database error: "+ exception.getMessage());
-            return "{\"error\": \"Unable to change the url of the item, please see server console for more info.\"}";
-        }
-    }
-
-    @POST
     @Path("delete")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)

@@ -45,6 +45,8 @@ function pageLoad() {
 
     document.getElementById("saveButton").addEventListener("click", saveEditlist);
     document.getElementById("cancelButton").addEventListener("click", cancelEditlist);
+    let username = Cookies.get("username");
+    document.getElementById("UsersName").innerHTML = username;
 
 }
 
