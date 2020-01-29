@@ -11,9 +11,9 @@ function pageLoad() {
                 `<p style="display: none;" ${list.ItemID}</p>`+
                 `<p style="font-size: 20px">Price: &pound${list.Price}</p>`+
                 `<p style="font-size: 20px">Quantity: ${list.Quantity}</p>`+
-                `<button id="BUY"><a href="${list.URL}">BUY</a></button>`+
                 `<button class='editButton' id='settings' data-id='${list.ItemID}'>Edit</button>` +
-                `<button class='deleteButton' id='settings1' data-id='${list.ItemID}'>Delete</button>`;
+                `<button class='deleteButton' id='settings1' data-id='${list.ItemID}'>Delete</button>`+
+                `<button id="BUY"><a style="text-decoration: none; font-size: 20px" href="${list.URL}">BUY</a></button>`;
 
         }
         document.getElementById("list").innerHTML= listHTML;
@@ -28,6 +28,8 @@ function pageLoad() {
     });
     document.getElementById("saveButton").addEventListener("click", saveEditlist);
     document.getElementById("cancelButton").addEventListener("click", cancelEditlist);
+    let username = Cookies.get("username");
+    document.getElementById("UsersName").innerHTML = username;
 }
 
 function editList(event) {

@@ -43,6 +43,7 @@ function pageLoad() {
 
     document.getElementById("saveButton").addEventListener("click", saveEditlist);
     document.getElementById("cancelButton").addEventListener("click", cancelEditlist);
+    document.getElementById("UsersName").innerHTML = username;
 
 }
 
