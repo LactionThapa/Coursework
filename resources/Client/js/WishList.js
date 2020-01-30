@@ -1,4 +1,5 @@
 function pageLoad() {
+    checkLogin();
     let username = Cookies.get("username");
     document.getElementById("user").innerHTML = username;
     let listsHTML = `</center><table align="center">` +
@@ -152,6 +153,14 @@ function deletelist(event) {
                 }
             }
         );
+    }
+}
+
+function checkLogin(){
+    let username = Cookies.get("username");
+
+    if(username === undefined) {
+        window.location.href = '/client/index.html';
     }
 }
 

@@ -1,4 +1,5 @@
 function pageLoad() {
+    checkLogin();
     let qs = getQueryStringParameters();
     let id = Number(qs["id"]);
     let listHTML = ``;
@@ -125,5 +126,13 @@ function deletelist(event) {
                 }
             }
         );
+    }
+}
+
+function checkLogin(){
+    let username = Cookies.get("username");
+
+    if(username === undefined) {
+        window.location.href = '/client/index.html';
     }
 }

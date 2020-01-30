@@ -1,5 +1,6 @@
 let newUsername;
 function pageLoad() {
+    checkLogin();
     let username = Cookies.get("username");
     document.getElementById("user").innerHTML = username;
     let listsHTML = ``;
@@ -91,9 +92,18 @@ function deleteUser() {
                 if (responseData.hasOwnProperty('error')) {
                     alert(responseData.error);
                 } else {
+                    Cookies.remove('token');
+                    Cookies.remove('username');
                     window.location.href = '/client/index.html';
                 }
             }
         );
+    }
+}
+function checkLogin(){
+    let username = Cookies.get("username");
+
+    if(username === undefined) {
+        window.location.href = '/client/index.html';
     }
 }

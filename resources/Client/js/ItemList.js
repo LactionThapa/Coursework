@@ -1,5 +1,6 @@
 let ListID;
 function pageLoad() {
+    checkLogin();
     let qs = getQueryStringParameters();
     let id = Number(qs["id"]);
     ListID = id;
@@ -132,5 +133,12 @@ function deletelist(event) {
                 }
             }
         );
+    }
+}
+function checkLogin(){
+    let username = Cookies.get("username");
+
+    if(username === undefined) {
+        window.location.href = '/client/index.html';
     }
 }
