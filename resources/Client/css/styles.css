@@ -8,9 +8,11 @@ body {
     margin-top: 50px;
 }
 
+
 .navbar {
     overflow: hidden;
     background-color: #333;
+    width: 100%;
 }
 
 .navbar a {
@@ -266,22 +268,19 @@ table{
 .imageContainer{
     border-style: groove;
     border-width: 1px;
-    margin: 50px auto;
-    width: 800px;
-    height: 800px;
+    margin: 100px auto;
+    width: 500px;
+    height: 500px;
     background-color: white;
     border-radius: 10px;
 
 }
 
 #ItemContainer{
-
-    border-style: groove;
-    border-width: 1px;
-    width: 799px;
-    height: 425px;
+    width: 500px;
+    height: 225px;
     background-color: #DCDCDC;
-    margin: 374px auto;
+    margin: 275px auto;
     float: right;
     border-radius: 0px 0px 10px 10px;
 
@@ -302,7 +301,7 @@ table{
     text-decoration: none;
     border: none;
     border-radius: 3px;
-    margin: 35px 330px auto;
+    margin: 35px 190px auto;
     box-shadow: 0 5px 10px 0 grey;
     z-index: 1;
 

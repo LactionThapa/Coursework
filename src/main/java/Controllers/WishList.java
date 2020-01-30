@@ -130,7 +130,7 @@ public class WishList {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
 
-            PreparedStatement ps = Main.db.prepareStatement("Delete FROM WishLists WHERE ListID=?");
+            PreparedStatement ps = Main.db.prepareStatement("Delete W.*, I.* FROM Items AS I Inner JOIN WishLists AS W ON W.ListID = I.ListID WHERE W.ListID=?");
             ps.setInt(1, ListID);
             ps.executeUpdate();
             return "{\"status\": \"OK\"}";

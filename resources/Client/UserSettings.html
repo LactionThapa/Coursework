@@ -4,14 +4,14 @@
 <head>
     <title>My List</title>
     <link rel="stylesheet" type="text/css" href="/client/css/styles.css">
-    <script src="/client/js/WishList.js"></script>
+    <script src="/client/js/UserSettings.js"></script>
     <script src="/client/js/js.cookie.js"></script>
 
 </head>
 
 <body id="body" onload="pageLoad()">
 <div class="navbar">
-    <a href="/client/WishList.html" class="active">Home</a>
+    <a href="/client/WishList.html">Home</a>
     <a href="#Friends List">Friends List</a>
     <div class="dropdown">
         <button class="dropbtn"><div id="UsersName"></div></button>
@@ -29,23 +29,21 @@
             <div class="centered" id="user"></div>
         </div>
 
-        <div id="pageHeader">
-            <div style="float: right"><button id="newButton" class="editButton">Add New List</button></div>
-        </div>
-
-        <div id="listDiv"></div>
-
         <div id="editDiv">
-            <h2 id="editHeading" style="margin: auto 150px auto"></h2>
+            <h2 id="editHeading"></h2>
             <form id="listForm">
-                <input type="hidden" name="ListID" id="ListID">
-                <div style="margin: auto 150px auto">
-                    <label for="ListName" class="label">Name:</label>
-                    <input type="text" name="ListName" id="ListName">
+                <input type="hidden" name="UserID" id="UserID">
+                <div >
+                    <label for="Username" class="label">Name:</label>
+                    <input type="text" name="Username" id="Username">
                 </div>
                 <div>
-                    <label for="Status" class="label">Status:</label>
-                    <input type="text" name="Status" id="Status">
+                    <label for="Password" class="label">Password:</label>
+                    <input type="text" name="Password" id="Password">
+                </div>
+                <div>
+                    <label for="EmailAddress" class="label">EmailAddress:</label>
+                    <input type="text" name="EmailAddress" id="EmailAddress">
                 </div>
                 <div>
                     <input type="submit" value="Save" id="saveButton">
@@ -53,6 +51,9 @@
                 </div>
             </form>
         </div>
+
+        <div id="listDiv" style="text-align: center; margin: 25px auto"></div>
+
     </div>
 
 </div>
