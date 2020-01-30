@@ -247,7 +247,7 @@ public class User {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
 
-            PreparedStatement ps = Main.db.prepareStatement("Delete Items.*, WishLists.*, Users.* FROM Items INNER JOIN WishLists ON WishLists.ListID = Items.ListID INNER JOIN Users ON Users.UserID = WishLists.UserID WHERE UserID = ?");
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
             ps.setInt(1, userID);
             ps.executeUpdate();
             return "{\"status\": \"OK\"}";
