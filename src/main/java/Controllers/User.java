@@ -247,15 +247,9 @@ public class User {
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
             }
 
-            PreparedStatement ps = Main.db.prepareStatement("Delete FROM Items WHERE ListID = (SELECT WishLists.ListID FROM WishLists WHERE UserID = ?)");
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserID = ?");
             ps.setInt(1, userID);
             ps.executeUpdate();
-            PreparedStatement ps1 = Main.db.prepareStatement("Delete FROM WishLists WHERE UserID = ?");
-            ps1.setInt(1, userID);
-            ps1.executeUpdate();
-            PreparedStatement ps2 = Main.db.prepareStatement("Delete FROM Users WHERE UserID = ?");
-            ps2.setInt(1, userID);
-            ps2.executeUpdate();
             return "{\"status\": \"OK\"}";
 
         } catch (Exception e) {
