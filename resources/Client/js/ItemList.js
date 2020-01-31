@@ -79,8 +79,8 @@ function saveEditlist(event) {
         alert("Please provide the price of the item.");
         return;
     }
-    if (document.getElementById("URL").value.trim() === '') {
-        alert("Please provide the quantity of the item.");
+    if (document.getElementById("Quantity").value.trim() === '') {
+        alert("Please provide the Quantity of the item.");
         return;
     }
     const id = document.getElementById("ItemID").value;
